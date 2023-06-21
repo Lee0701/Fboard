@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'ee.oyatl.ime.f.en'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "ee.oyatl.ime.f.en"
         minSdk 16
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "0.0.1"
 
