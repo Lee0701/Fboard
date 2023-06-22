@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/ime-en" />
             <option value="$PROJECT_DIR$/ime-ko" />
-            <option value="$PROJECT_DIR$/view" />
           </set>
         </option>
       </GradleProjectSettings>
