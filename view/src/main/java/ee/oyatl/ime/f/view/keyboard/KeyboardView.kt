@@ -13,10 +13,10 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import androidx.preference.PreferenceManager
-import ee.oyatl.ime.f.core.model.Key
-import ee.oyatl.ime.f.core.model.KeyType
-import ee.oyatl.ime.f.core.model.KeyboardLayout
-import ee.oyatl.ime.f.core.model.Spacer
+import ee.oyatl.ime.f.view.model.Key
+import ee.oyatl.ime.f.view.model.KeyType
+import ee.oyatl.ime.f.view.model.KeyboardLayout
+import ee.oyatl.ime.f.view.model.Spacer
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min

@@ -1,7 +1,7 @@
-package ee.oyatl.ime.f.core.data
+package ee.oyatl.ime.f.view.data
 
 import android.view.KeyEvent
-import ee.oyatl.ime.f.core.model.*
+import ee.oyatl.ime.f.view.model.*
 
 object SoftKeyboardLayouts {
     val ROW_BOTTOM = Row(listOf(

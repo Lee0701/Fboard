@@ -1,6 +1,6 @@
 package ee.oyatl.ime.f.ko
 
-import ee.oyatl.ime.f.core.data.SoftKeyboardLayouts
+import ee.oyatl.ime.f.view.data.SoftKeyboardLayouts
 import ee.oyatl.ime.f.view.DefaultFboardIMEBase
 import ee.oyatl.ime.f.view.InputViewManager
 import ee.oyatl.ime.f.view.keyboard.Themes

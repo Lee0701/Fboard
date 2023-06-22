@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.core.model
+package ee.oyatl.ime.f.view.model
 
 import androidx.annotation.DrawableRes
 import ee.oyatl.ime.f.core.R

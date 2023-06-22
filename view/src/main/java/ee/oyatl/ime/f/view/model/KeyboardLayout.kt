@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.core.model
+package ee.oyatl.ime.f.view.model
 
 data class KeyboardLayout(
     val rows: List<Row> = listOf(),

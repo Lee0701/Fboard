@@ -1,7 +1,7 @@
 package ee.oyatl.ime.f.view.keyboard
 
-import ee.oyatl.ime.f.core.model.KeyIconType
-import ee.oyatl.ime.f.core.model.KeyType
+import ee.oyatl.ime.f.view.model.KeyIconType
+import ee.oyatl.ime.f.view.model.KeyType
 
 data class Theme(
     val keyboardBackground: Int,

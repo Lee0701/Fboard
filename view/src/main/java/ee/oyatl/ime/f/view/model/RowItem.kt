@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.core.model
+package ee.oyatl.ime.f.view.model
 
 sealed interface RowItem {
     val width: Float

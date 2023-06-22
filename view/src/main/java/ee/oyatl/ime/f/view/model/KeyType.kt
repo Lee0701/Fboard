@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.core.model
+package ee.oyatl.ime.f.view.model
 
 enum class KeyType {
     Alphanumeric,

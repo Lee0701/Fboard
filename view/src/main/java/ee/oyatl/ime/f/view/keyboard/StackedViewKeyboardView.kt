@@ -12,10 +12,10 @@ import ee.oyatl.ime.f.view.databinding.KeyboardBinding
 import ee.oyatl.ime.f.view.databinding.KeyboardKeyBinding
 import ee.oyatl.ime.f.view.databinding.KeyboardRowBinding
 import ee.oyatl.ime.f.view.databinding.KeyboardSpacerBinding
-import ee.oyatl.ime.f.core.model.Key
-import ee.oyatl.ime.f.core.model.KeyboardLayout
-import ee.oyatl.ime.f.core.model.Row
-import ee.oyatl.ime.f.core.model.Spacer
+import ee.oyatl.ime.f.view.model.Key
+import ee.oyatl.ime.f.view.model.KeyboardLayout
+import ee.oyatl.ime.f.view.model.Row
+import ee.oyatl.ime.f.view.model.Spacer
 import kotlin.math.roundToInt
 
 class StackedViewKeyboardView(

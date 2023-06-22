@@ -2,7 +2,7 @@ package ee.oyatl.ime.f.view
 
 import android.content.Context
 import android.view.View
-import ee.oyatl.ime.f.core.model.KeyboardLayout
+import ee.oyatl.ime.f.view.model.KeyboardLayout
 import ee.oyatl.ime.f.view.keyboard.KeyboardListener
 import ee.oyatl.ime.f.view.keyboard.Theme
 
