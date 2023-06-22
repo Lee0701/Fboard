@@ -21,7 +21,7 @@ abstract class DefaultFboardIMEBase(
 
     protected var modifierState: ModifierState = ModifierState()
     protected var shiftClickedTime: Long = 0
-    protected var inputExists: Boolean = false
+    protected var inputRecorded: Boolean = false
 
     protected val keyCharacterMap: KeyCharacterMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD)
     final override val keyboardListener: KeyboardListener = this
@@ -51,6 +51,7 @@ abstract class DefaultFboardIMEBase(
         val newShiftState = currentShiftState.copy()
 
         modifierState = lastState.copy(shiftState = newShiftState.copy(pressing = true))
+        inputRecorded = false
         onUpdate()
     }
 
@@ -70,7 +71,7 @@ abstract class DefaultFboardIMEBase(
             } else {
                 ModifierState.Item()
             }
-        } else if(inputExists) {
+        } else if(inputRecorded) {
             ModifierState.Item()
         } else {
             ModifierState.Item(pressed = true)
@@ -78,7 +79,7 @@ abstract class DefaultFboardIMEBase(
 
         modifierState = lastState.copy(shiftState = newShiftState.copy(pressing = false))
         shiftClickedTime = currentTime
-        inputExists = false
+        inputRecorded = false
         onUpdate()
     }
 
@@ -111,7 +112,8 @@ abstract class DefaultFboardIMEBase(
     }
 
     override fun onKeyClick(code: Int, output: String?) {
-        val consumed: Boolean = if(isPrintingKey(code)) {
+        val isPrintingKey = isPrintingKey(code)
+        val consumed: Boolean = if(isPrintingKey) {
             onPrintingKey(code)
         } else when(code) {
             KeyEvent.KEYCODE_DEL -> onDeleteKey()
@@ -122,12 +124,18 @@ abstract class DefaultFboardIMEBase(
             else -> false
         }
         if(!consumed) {
-            val inputConnection = currentInputConnection ?: return
-            val shift = modifierState.shiftState.pressed
-            this.onReset()
-            if(shift) inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT))
-            sendDownUpKeyEvents(code)
-            if(shift) inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT))
+            if(isPrintingKey) {
+                val inputConnection = currentInputConnection ?: return
+                this.onReset()
+                val char = keyCharacterMap.get(code, modifierState.asMetaState())
+                if(char > 0) inputConnection.commitText(char.toChar().toString(), 1)
+            } else {
+                sendDownUpKeyEvents(code)
+            }
+        }
+        if(isPrintingKey) {
+            inputRecorded = true
+            autoUnshift()
         }
         this.onUpdate()
     }
@@ -148,6 +156,16 @@ abstract class DefaultFboardIMEBase(
     }
 
     override fun onKeyFlick(direction: FlickDirection, code: Int, output: String?) {
+    }
+
+    fun autoUnshift() {
+        if(modifierState.shiftState.pressing && inputRecorded) return
+        val lastState = modifierState
+        val lastShiftState = lastState.shiftState
+        if(!lastShiftState.locked && !lastShiftState.pressing) {
+            modifierState = lastState.copy(shiftState = ModifierState.Item())
+        }
+        onUpdate()
     }
 
     private fun isPrintingKey(code: Int): Boolean = KeyEvent(KeyEvent.ACTION_DOWN, code).isPrintingKey

@@ -82,6 +82,16 @@ class FboardIMEKorean: DefaultFboardIMEBase(
         return true
     }
 
+    override fun onSpace(): Boolean {
+        onReset()
+        return super.onSpace()
+    }
+
+    override fun onActionKey(): Boolean {
+        onReset()
+        return super.onActionKey()
+    }
+
     companion object {
         fun generateInputViewParams(): InputViewManager.Params = InputViewManager.Params(
             keyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE,
