@@ -1,6 +1,6 @@
 package ee.oyatl.ime.f.ko
 
-import ee.oyatl.ime.f.core.FboardAppBase
+import ee.oyatl.ime.f.view.DefaultIMEBase
 
-class FboardAppKorean: FboardAppBase() {
+class FboardAppKorean: DefaultIMEBase() {
 }

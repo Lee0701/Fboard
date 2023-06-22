@@ -14,5 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Fboard"
 include ':core'
+include ':view'
 include ':ime-en'
 include ':ime-ko'

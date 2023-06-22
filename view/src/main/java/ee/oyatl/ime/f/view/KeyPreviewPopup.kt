@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.core.view
+package ee.oyatl.ime.f.view
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -12,8 +12,7 @@ import android.view.View
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import ee.oyatl.ime.f.core.R
-import ee.oyatl.ime.f.core.databinding.KeyPopupPreviewBinding
+import ee.oyatl.ime.f.view.databinding.KeyPopupPreviewBinding
 import kotlin.math.roundToInt
 
 class KeyPreviewPopup(

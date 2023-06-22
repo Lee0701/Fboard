@@ -1,7 +1,6 @@
-package ee.oyatl.ime.f.core.view
+package ee.oyatl.ime.f.view
 
 import com.google.android.material.color.DynamicColors
-import ee.oyatl.ime.f.core.R
 import ee.oyatl.ime.f.core.model.KeyType.*
 import ee.oyatl.ime.f.core.model.KeyIconType.*
 

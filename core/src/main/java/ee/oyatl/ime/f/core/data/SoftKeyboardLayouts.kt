@@ -1,7 +1,6 @@
 package ee.oyatl.ime.f.core.data
 
 import android.view.KeyEvent
-import ee.oyatl.ime.f.core.R
 import ee.oyatl.ime.f.core.model.*
 
 object SoftKeyboardLayouts {

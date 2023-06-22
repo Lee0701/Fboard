@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.core.view
+package ee.oyatl.ime.f.view
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,10 +8,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.google.android.material.color.DynamicColors
-import ee.oyatl.ime.f.core.databinding.KeyboardBinding
-import ee.oyatl.ime.f.core.databinding.KeyboardKeyBinding
-import ee.oyatl.ime.f.core.databinding.KeyboardRowBinding
-import ee.oyatl.ime.f.core.databinding.KeyboardSpacerBinding
+import ee.oyatl.ime.f.view.databinding.KeyboardBinding
+import ee.oyatl.ime.f.view.databinding.KeyboardKeyBinding
+import ee.oyatl.ime.f.view.databinding.KeyboardRowBinding
+import ee.oyatl.ime.f.view.databinding.KeyboardSpacerBinding
 import ee.oyatl.ime.f.core.model.Key
 import ee.oyatl.ime.f.core.model.Keyboard
 import ee.oyatl.ime.f.core.model.Row

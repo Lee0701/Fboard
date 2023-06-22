@@ -1,6 +1,6 @@
 package ee.oyatl.ime.f.en
 
-import ee.oyatl.ime.f.core.FboardAppBase
+import ee.oyatl.ime.f.view.DynamicColorsAppBase
 
-class FboardAppEnglish: FboardAppBase() {
+class FboardAppEnglish: DynamicColorsAppBase() {
 }

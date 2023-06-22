@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.core.view
+package ee.oyatl.ime.f.view
 
 import android.annotation.SuppressLint
 import android.content.Context
