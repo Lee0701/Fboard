@@ -15,7 +15,7 @@ import android.widget.FrameLayout
 import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.core.model.Key
 import ee.oyatl.ime.f.core.model.KeyType
-import ee.oyatl.ime.f.core.model.Keyboard
+import ee.oyatl.ime.f.core.model.KeyboardLayout
 import ee.oyatl.ime.f.core.model.Spacer
 import kotlin.math.abs
 import kotlin.math.max
@@ -25,7 +25,7 @@ import kotlin.math.roundToInt
 abstract class KeyboardView(
     context: Context,
     attrs: AttributeSet?,
-    protected val keyboard: Keyboard,
+    protected val keyboard: KeyboardLayout,
     protected val theme: Theme,
     protected val listener: KeyboardListener,
     unifyHeight: Boolean,
@@ -56,7 +56,7 @@ abstract class KeyboardView(
     private var popups: MutableMap<Int, KeyboardPopup> = mutableMapOf()
 
     protected abstract val wrappedKeys: List<RowItemWrapper>
-    protected val moreKeysKeyboards: MutableMap<Int, Keyboard> = mutableMapOf()
+    protected val moreKeysKeyboards: MutableMap<Int, KeyboardLayout> = mutableMapOf()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -202,7 +202,7 @@ abstract class KeyboardView(
     }
 
     abstract fun updateLabelsAndIcons(labels: Map<Int, CharSequence>, icons: Map<Int, Drawable>)
-    abstract fun updateMoreKeyKeyboards(keyboards: Map<Int, Keyboard>)
+    abstract fun updateMoreKeyKeyboards(keyboards: Map<Int, KeyboardLayout>)
     abstract fun postViewChanged()
     abstract fun highlight(key: KeyWrapper)
 

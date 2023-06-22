@@ -26,7 +26,7 @@ object SoftKeyboardLayouts {
         Key(KeyEvent.KEYCODE_0, "0"),
     ))
 
-    val LAYOUT_QWERTY_MOBILE = Keyboard(listOf(
+    val LAYOUT_QWERTY_MOBILE = KeyboardLayout(listOf(
         Row(listOf(
             Key(KeyEvent.KEYCODE_Q, "Q"),
             Key(KeyEvent.KEYCODE_W, "W"),

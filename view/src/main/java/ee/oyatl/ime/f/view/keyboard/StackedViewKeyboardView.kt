@@ -13,7 +13,7 @@ import ee.oyatl.ime.f.view.databinding.KeyboardKeyBinding
 import ee.oyatl.ime.f.view.databinding.KeyboardRowBinding
 import ee.oyatl.ime.f.view.databinding.KeyboardSpacerBinding
 import ee.oyatl.ime.f.core.model.Key
-import ee.oyatl.ime.f.core.model.Keyboard
+import ee.oyatl.ime.f.core.model.KeyboardLayout
 import ee.oyatl.ime.f.core.model.Row
 import ee.oyatl.ime.f.core.model.Spacer
 import kotlin.math.roundToInt
@@ -21,7 +21,7 @@ import kotlin.math.roundToInt
 class StackedViewKeyboardView(
     context: Context,
     attrs: AttributeSet?,
-    keyboard: Keyboard,
+    keyboard: KeyboardLayout,
     theme: Theme,
     listener: KeyboardListener,
     unifyHeight: Boolean,
@@ -40,7 +40,7 @@ class StackedViewKeyboardView(
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initKeyboardView(keyboard: Keyboard, theme: Theme, listener: KeyboardListener): KeyboardViewWrapper {
+    private fun initKeyboardView(keyboard: KeyboardLayout, theme: Theme, listener: KeyboardListener): KeyboardViewWrapper {
         val wrappedContext = DynamicColors.wrapContextIfAvailable(context, theme.keyboardBackground)
 
         val rowViewWrappers = mutableListOf<RowViewWrapper>()
@@ -112,7 +112,7 @@ class StackedViewKeyboardView(
     }
 
     data class KeyboardViewWrapper(
-        val keyboard: Keyboard,
+        val keyboard: KeyboardLayout,
         val binding: KeyboardBinding,
         val rows: List<RowViewWrapper>,
         val keys: List<KeyViewWrapper>,
@@ -160,7 +160,7 @@ class StackedViewKeyboardView(
         }
     }
 
-    override fun updateMoreKeyKeyboards(keyboards: Map<Int, Keyboard>) {
+    override fun updateMoreKeyKeyboards(keyboards: Map<Int, KeyboardLayout>) {
         moreKeysKeyboards.clear()
         moreKeysKeyboards += keyboards
     }
