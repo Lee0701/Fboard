@@ -1,14 +1,14 @@
 package ee.oyatl.ime.f.ko.hangul
 
 class HangulCombiner(
-    private val jamoCombinationMap: Map<Pair<Int, Int>, Int> = mapOf(),
+    private val jamoCombinationTable: JamoCombinationTable,
 ) {
     fun combine(state: State, input: Int): Pair<CharSequence, List<State>> {
         val newStates = mutableListOf<State>()
         var composed = ""
         if(Hangul.isCho(input and 0x1fffff)) {
             if(state.cho != null) {
-                val combination = jamoCombinationMap[state.cho to input]
+                val combination = jamoCombinationTable[state.cho to input]
                 if(combination != null) {
                     if(state.last != null && !Hangul.isCho(state.last)) {
                         composed += state.composed
@@ -23,7 +23,7 @@ class HangulCombiner(
             } else newStates += state.copy(cho = input)
         } else if(Hangul.isJung(input and 0x1fffff)) {
             if(state.jung != null) {
-                val combination = jamoCombinationMap[state.jung to input]
+                val combination = jamoCombinationTable[state.jung to input]
                 if(combination != null) newStates += state.copy(jung = combination)
                 else {
                     composed += state.composed
@@ -33,7 +33,7 @@ class HangulCombiner(
         } else if(Hangul.isJong(input and 0x1fffff)) {
             val newStateJong = state.jong
             if(newStateJong != null) {
-                val combination = jamoCombinationMap[newStateJong to input]
+                val combination = jamoCombinationTable[newStateJong to input]
                 if(combination != null) newStates += state.copy(jong = combination, jongCombination = newStateJong to input)
                 else {
                     composed += state.composed
@@ -45,21 +45,24 @@ class HangulCombiner(
             val jong = Hangul.consonantToJong(input and 0xffff)
             if(state.cho != null && state.jung != null) {
                 if(state.jong != null) {
-                    val combination = jamoCombinationMap[state.jong to jong]
+                    val combination = jamoCombinationTable[state.jong to jong]
                     if(combination != null) newStates += state.copy(jong = combination, jongCombination = state.jong to jong)
                     else {
                         composed += state.composed
                         newStates += State(cho = cho)
                     }
-                } else {
+                } else if(jong != 0) {
                     newStates += state.copy(jong = jong)
+                } else {
+                    composed += state.composed
+                    newStates += State(cho = cho)
                 }
             } else if(state.cho != null) {
                 if(state.last != null && !Hangul.isConsonant(state.last)) {
                     composed += state.composed
                     newStates += State(cho = cho)
                 } else {
-                    val combination = jamoCombinationMap[state.cho to cho]
+                    val combination = jamoCombinationTable[state.cho to cho]
                     if(combination != null) newStates += state.copy(cho = combination)
                     else {
                         composed += state.composed
@@ -86,7 +89,7 @@ class HangulCombiner(
                     newStates += State(cho = promotedCho, jung = jung)
                 }
             } else if(state.jung != null) {
-                val combination = jamoCombinationMap[state.jung to jung]
+                val combination = jamoCombinationTable[state.jung to jung]
                 if(combination != null) newStates += state.copy(jung = combination)
                 else {
                     composed += state.composed
@@ -98,6 +101,7 @@ class HangulCombiner(
         } else {
             composed += state.composed
             composed += input.toChar()
+            newStates.clear()
         }
         return composed to newStates.map { it.copy(last = input) }
     }
@@ -126,7 +130,7 @@ class HangulCombiner(
 
         val composed: CharSequence =
             if(cho == null && jung == null && jong == null) ""
-            else if(listOfNotNull(cho, jung, jong).let { it.size == 1 && it.all { c -> Hangul.isModernJamo(c) } })
+            else if(listOfNotNull(cho, jung, jong).let { it.size == 1 && it.all { c -> Hangul.isModernJamo(c and 0xffff) } })
                 (choChar?.let { Hangul.choToCompatConsonant(it) } ?:
                 jungChar?.let { Hangul.jungToCompatVowel(it) } ?:
                 jongChar?.let { Hangul.jongToCompatConsonant(it) })?.toString().orEmpty()
