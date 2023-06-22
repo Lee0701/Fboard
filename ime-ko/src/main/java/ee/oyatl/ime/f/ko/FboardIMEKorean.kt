@@ -1,9 +1,8 @@
 package ee.oyatl.ime.f.ko
 
 import android.graphics.drawable.Drawable
-import android.view.KeyCharacterMap
-import ee.oyatl.ime.f.common.input.LayeredCodeConvertTable
 import ee.oyatl.ime.f.common.DefaultFboardIMEBase
+import ee.oyatl.ime.f.common.input.LayeredCodeConvertTable
 import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.Themes
@@ -62,9 +61,11 @@ class FboardIMEKorean: DefaultFboardIMEBase(
         } else {
             val (text, newStates) =
                 hangulCombiner.combine(hangulState, converted)
-            if(text.isNotEmpty()) stateStack.clear()
+            if(text.isNotEmpty()) {
+                stateStack.clear()
+                inputConnection.commitText(text, 1)
+            }
             this.stateStack += newStates
-            inputConnection.commitText(text, 1)
         }
         onUpdate()
         return true

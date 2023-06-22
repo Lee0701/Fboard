@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
@@ -85,14 +86,20 @@ abstract class DefaultFboardIMEBase(
         super.onCreate()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun onCreateInputView(): View {
         val view = this.createView(this)
         this.onUpdate()
         return view
+    }
+
+    override fun onStartInput(attribute: EditorInfo?, restarting: Boolean) {
+        super.onStartInput(attribute, restarting)
+        this.onReset()
+        this.onUpdate()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     override fun createView(context: Context): View {
@@ -116,11 +123,11 @@ abstract class DefaultFboardIMEBase(
         }
         if(!consumed) {
             val inputConnection = currentInputConnection ?: return
-            if(modifierState.shiftState.pressed)
-                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT))
+            val shift = modifierState.shiftState.pressed
+            this.onReset()
+            if(shift) inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT))
             sendDownUpKeyEvents(code)
-            if(modifierState.shiftState.pressed)
-                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT))
+            if(shift) inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT))
         }
         this.onUpdate()
     }
