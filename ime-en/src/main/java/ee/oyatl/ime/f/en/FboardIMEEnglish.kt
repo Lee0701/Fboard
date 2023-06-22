@@ -1,9 +1,9 @@
 package ee.oyatl.ime.f.en
 
-import ee.oyatl.ime.f.view.data.SoftKeyboardLayouts
-import ee.oyatl.ime.f.view.DefaultFboardIMEBase
-import ee.oyatl.ime.f.view.InputViewManager
-import ee.oyatl.ime.f.view.keyboard.Themes
+import ee.oyatl.ime.f.common.view.DefaultFboardIMEBase
+import ee.oyatl.ime.f.common.view.data.SoftKeyboardLayouts
+import ee.oyatl.ime.f.common.view.InputViewManager
+import ee.oyatl.ime.f.common.view.keyboard.Themes
 
 class FboardIMEEnglish: DefaultFboardIMEBase(
     params = generateInputViewParams(),
