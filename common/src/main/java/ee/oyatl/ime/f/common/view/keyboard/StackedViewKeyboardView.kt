@@ -29,8 +29,9 @@ class StackedViewKeyboardView(
     disableTouch: Boolean = false,
 ): KeyboardView(context, attrs, keyboard, theme, listener, unifyHeight, rowHeight, disableTouch) {
 
-    private val keyboardViewWrapper = initKeyboardView(keyboard, theme, listener)
-    override val wrappedKeys: List<KeyWrapper> = keyboardViewWrapper.keys.toList()
+    private val keyboardViewWrapper: KeyboardViewWrapper = initKeyboardView(keyboard, theme)
+    private val rowItemViewWrappers: List<RowItemViewWrapper> = keyboardViewWrapper.rows.flatMap { it.rowItems }
+    override val wrappedKeys: List<RowItemWrapper> = rowItemViewWrappers
 
     init {
         this.addView(keyboardViewWrapper.binding.root)
@@ -40,7 +41,7 @@ class StackedViewKeyboardView(
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initKeyboardView(keyboard: KeyboardLayout, theme: Theme, listener: KeyboardListener): KeyboardViewWrapper {
+    private fun initKeyboardView(keyboard: KeyboardLayout, theme: Theme): KeyboardViewWrapper {
         val wrappedContext = DynamicColors.wrapContextIfAvailable(context, theme.keyboardBackground)
 
         val rowViewWrappers = mutableListOf<RowViewWrapper>()
@@ -58,41 +59,44 @@ class StackedViewKeyboardView(
     }
 
     private fun initRowView(row: Row, theme: Theme): RowViewWrapper {
-        val wrappers = mutableListOf<RowItemViewWrapper>()
-        val binding = KeyboardRowBinding.inflate(LayoutInflater.from(context), null, false).apply {
-            root.layoutParams = LinearLayoutCompat.LayoutParams(
-                LinearLayoutCompat.LayoutParams.MATCH_PARENT, 0
-            ).apply {
-                weight = 1f
-            }
-            row.keys.forEach { rowItem ->
-                when(rowItem) {
-                    is Key -> {
-                        val keyViewWrapper = initKeyView(rowItem, this, theme)
-                        wrappers += keyViewWrapper
-                        root.addView(keyViewWrapper.binding.root)
-                    }
-                    is Spacer -> {
-                        val spacerViewWrapper = initSpacerView(rowItem)
-                        wrappers += spacerViewWrapper
-                        root.addView(spacerViewWrapper.binding.root)
-                    }
-                    else -> {}
+        val wrappers: MutableList<RowItemViewWrapper> = mutableListOf()
+        val binding: KeyboardRowBinding = KeyboardRowBinding.inflate(LayoutInflater.from(context), null, false)
+
+        binding.root.layoutParams = LinearLayoutCompat.LayoutParams(
+            LinearLayoutCompat.LayoutParams.MATCH_PARENT, 0
+        ).apply {
+            weight = 1f
+        }
+        row.keys.forEach { rowItem ->
+            when(rowItem) {
+                is Key -> {
+                    val keyViewWrapper = initKeyView(rowItem, binding, theme)
+                    wrappers += keyViewWrapper
+                    binding.root.addView(keyViewWrapper.binding.root)
                 }
+                is Spacer -> {
+                    val spacerViewWrapper: SpacerViewWrapper = initSpacerView(rowItem, binding)
+                    wrappers += spacerViewWrapper
+                    binding.root.addView(spacerViewWrapper.binding.root)
+                }
+                else -> {}
             }
         }
+
         return RowViewWrapper(row, binding, wrappers)
     }
 
-    private fun initSpacerView(spacerModel: Spacer): SpacerViewWrapper {
-        val binding = KeyboardSpacerBinding.inflate(LayoutInflater.from(context), null, false).apply {
-            root.layoutParams = LinearLayoutCompat.LayoutParams(
-                0, LinearLayoutCompat.LayoutParams.MATCH_PARENT
-            ).apply {
-                weight = spacerModel.width
+    private fun initSpacerView(spacerModel: Spacer, row: KeyboardRowBinding): SpacerViewWrapper {
+        val binding = KeyboardSpacerBinding
+            .inflate(LayoutInflater.from(context), null, false)
+            .apply {
+                root.layoutParams = LinearLayoutCompat.LayoutParams(
+                    0, LinearLayoutCompat.LayoutParams.MATCH_PARENT
+                ).apply {
+                    weight = spacerModel.width
+                }
             }
-        }
-        return SpacerViewWrapper(spacerModel, binding)
+        return SpacerViewWrapper(spacerModel, row, binding)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -126,7 +130,7 @@ class StackedViewKeyboardView(
         val keys: List<KeyViewWrapper> = rowItems.filterIsInstance<KeyViewWrapper>()
     }
 
-    interface RowItemViewWrapper
+    interface RowItemViewWrapper: RowItemWrapper
 
     data class KeyViewWrapper(
         override val key: Key,
@@ -143,12 +147,13 @@ class StackedViewKeyboardView(
 
     data class SpacerViewWrapper(
         override val spacer: Spacer,
+        private val row: KeyboardRowBinding,
         val binding: KeyboardSpacerBinding,
     ): RowItemViewWrapper, SpacerWrapper {
         override val x: Int get() = binding.root.x.roundToInt()
-        override val y: Int get() = binding.root.y.roundToInt()
+        override val y: Int get() = row.root.y.roundToInt()
         override val width: Int get() = binding.root.width
-        override val height: Int get() = binding.root.height
+        override val height: Int get() = row.root.height
     }
 
     override fun updateLabelsAndIcons(labels: Map<Int, CharSequence>, icons: Map<Int, Drawable>) {
@@ -166,14 +171,15 @@ class StackedViewKeyboardView(
     }
 
     override fun postViewChanged() {
-        wrappedKeys.filterIsInstance<KeyViewWrapper>().forEach { key ->
+        rowItemViewWrappers.filterIsInstance<KeyViewWrapper>().forEach { key ->
             key.binding.root.isPressed = keyStates[key.key] == true
         }
     }
 
     override fun highlight(key: KeyWrapper) {
-        wrappedKeys.filterIsInstance<KeyViewWrapper>().forEach { it.binding.root.isPressed = false }
-        val wrappedKey = wrappedKeys.filterIsInstance<KeyViewWrapper>().find { it == key } ?: return
+        val keyViewWrappers = rowItemViewWrappers.filterIsInstance<KeyViewWrapper>()
+        keyViewWrappers.forEach { it.binding.root.isPressed = false }
+        val wrappedKey = keyViewWrappers.find { it == key } ?: return
         wrappedKey.binding.root.isPressed = true
     }
 

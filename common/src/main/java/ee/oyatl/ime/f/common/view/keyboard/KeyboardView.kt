@@ -32,13 +32,11 @@ abstract class KeyboardView(
     rowHeight: Int,
     private val disableTouch: Boolean = false,
 ): FrameLayout(context, attrs) {
-    protected val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val rect = Rect()
 
     open val keyboardWidth: Int = context.resources.displayMetrics.widthPixels
     open val keyboardHeight: Int = if(unifyHeight) rowHeight * 4 else rowHeight * keyboard.rows.size
-
-    protected val typedValue = TypedValue()
 
     protected val showKeyPopups: Boolean = preferences.getBoolean("behaviour_show_popups", true)
     protected val showMoreKeys: Boolean = preferences.getBoolean("behaviour_show_more_keys", true)
@@ -211,6 +209,12 @@ abstract class KeyboardView(
             if(x in key.x until key.x+key.width) {
                 if(y in key.y until key.y+key.height) {
                     if(key is KeyWrapper) return key
+                    else if(key is SpacerWrapper) {
+                        val left = findKey(key.x - 2, key.y + key.height/2)
+                        val right = findKey(key.x + key.width + 2, key.y + key.height/2)
+                        if(left != null) return left
+                        else if(right != null) return right
+                    }
                 }
             }
         }
