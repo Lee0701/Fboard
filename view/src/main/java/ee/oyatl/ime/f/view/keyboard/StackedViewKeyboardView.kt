@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.view
+package ee.oyatl.ime.f.view.keyboard
 
 import android.annotation.SuppressLint
 import android.content.Context

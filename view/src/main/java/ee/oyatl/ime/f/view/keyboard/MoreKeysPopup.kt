@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.view
+package ee.oyatl.ime.f.view.keyboard
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.core.model.Keyboard
+import ee.oyatl.ime.f.view.R
 import kotlin.math.roundToInt
 
 class MoreKeysPopup(
@@ -23,7 +24,10 @@ class MoreKeysPopup(
     val listener: KeyboardListener,
 ): KeyboardPopup(context, key), KeyboardListener {
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-    private val wrappedContext = ContextThemeWrapper(context, R.style.Theme_Fboard_Keyboard_KeyPopup)
+    private val wrappedContext = ContextThemeWrapper(
+        context,
+        R.style.Theme_Fboard_Keyboard_KeyPopup,
+    )
 
     private val keyWidth: Float = wrappedContext.resources.getDimension(R.dimen.key_popup_morekeys_width)
     private val keyHeight: Float = wrappedContext.resources.getDimension(R.dimen.key_popup_morekeys_height)

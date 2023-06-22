@@ -1,6 +1,6 @@
 package ee.oyatl.ime.f.ko
 
-import ee.oyatl.ime.f.view.DefaultIMEBase
+import ee.oyatl.ime.f.view.DynamicColorsAppBase
 
-class FboardAppKorean: DefaultIMEBase() {
+class FboardAppKorean: DynamicColorsAppBase() {
 }

@@ -1,9 +1,12 @@
 package ee.oyatl.ime.f.view
 
-import android.inputmethodservice.InputMethodService
 import android.view.View
+import ee.oyatl.ime.f.core.FboardIMEBase
+import ee.oyatl.ime.f.view.keyboard.FlickDirection
+import ee.oyatl.ime.f.view.keyboard.InputViewManager
+import ee.oyatl.ime.f.view.keyboard.KeyboardListener
 
-abstract class DefaultIMEBase: InputMethodService(), InputViewManager, KeyboardListener {
+abstract class DefaultFboardIMEBase: FboardIMEBase(), InputViewManager, KeyboardListener {
     override val keyboardListener: KeyboardListener = this
 
     override fun onCreateInputView(): View? {

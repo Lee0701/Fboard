@@ -1,7 +1,7 @@
 package ee.oyatl.ime.f.en
 
-import ee.oyatl.ime.f.view.DefaultIMEBase
+import ee.oyatl.ime.f.view.DefaultFboardIMEBase
 
-class FboardIMEEnglish: DefaultIMEBase() {
+class FboardIMEEnglish: DefaultFboardIMEBase() {
 
 }

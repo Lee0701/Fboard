@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.view
+package ee.oyatl.ime.f.view.keyboard
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -12,6 +12,7 @@ import android.view.View
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import ee.oyatl.ime.f.view.R
 import ee.oyatl.ime.f.view.databinding.KeyPopupPreviewBinding
 import kotlin.math.roundToInt
 
@@ -20,7 +21,10 @@ class KeyPreviewPopup(
     key: KeyboardView.KeyWrapper,
 ): KeyboardPopup(context, key) {
 
-    private val wrappedContext = ContextThemeWrapper(context, R.style.Theme_Fboard_Keyboard_KeyPopup)
+    private val wrappedContext = ContextThemeWrapper(
+        context,
+        R.style.Theme_Fboard_Keyboard_KeyPopup,
+    )
     private val binding = KeyPopupPreviewBinding.inflate(LayoutInflater.from(wrappedContext))
 
     override val offsetX: Int = 0

@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.view
+package ee.oyatl.ime.f.view.keyboard
 
 import ee.oyatl.ime.f.core.model.KeyIconType
 import ee.oyatl.ime.f.core.model.KeyType

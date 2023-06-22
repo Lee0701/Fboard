@@ -1,8 +1,9 @@
-package ee.oyatl.ime.f.view
+package ee.oyatl.ime.f.view.keyboard
 
 import com.google.android.material.color.DynamicColors
 import ee.oyatl.ime.f.core.model.KeyType.*
 import ee.oyatl.ime.f.core.model.KeyIconType.*
+import ee.oyatl.ime.f.view.R
 
 // TODO: Replace this with xml theme
 object Themes {
