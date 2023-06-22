@@ -3,15 +3,17 @@
           xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
-            android:allowBackup="true"
-            android:fullBackupContent="@xml/backup_rules"
-            tools:targetApi="31"
-            android:dataExtractionRules="@xml/data_extraction_rules"
-            android:label="@string/app_name"
-            android:icon="@mipmap/ic_launcher"
-            android:supportsRtl="true"
-            android:theme="@style/Theme.Fboard">
+        android:name=".FboardAppEnglish"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_rules"
+        tools:targetApi="31"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Fboard">
 
         <service
             android:name=".FboardIMEEnglish"

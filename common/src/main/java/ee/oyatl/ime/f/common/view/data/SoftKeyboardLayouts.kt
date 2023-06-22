@@ -4,16 +4,16 @@ import android.view.KeyEvent
 import ee.oyatl.ime.f.common.view.model.*
 
 object SoftKeyboardLayouts {
-    val ROW_BOTTOM = Row(listOf(
+    val ROW_BOTTOM = Row(
         Key(KeyEvent.KEYCODE_SYM, null, "?12", width = 1.5f, type = KeyType.Modifier),
         Key(KeyEvent.KEYCODE_COMMA, ",", type = KeyType.AlphanumericAlt),
         Key(KeyEvent.KEYCODE_LANGUAGE_SWITCH, null, iconType = KeyIconType.Language, type = KeyType.ModifierAlt),
         Key(KeyEvent.KEYCODE_SPACE, null, "", width = 4f, type = KeyType.Space),
         Key(KeyEvent.KEYCODE_PERIOD, ".", type = KeyType.AlphanumericAlt),
         Key(KeyEvent.KEYCODE_ENTER, null, iconType = KeyIconType.Return, width = 1.5f, type = KeyType.Action),
-    ))
+    )
 
-    val ROW_NUMBERS = Row(listOf(
+    val ROW_NUMBERS = Row(
         Key(KeyEvent.KEYCODE_1, "1"),
         Key(KeyEvent.KEYCODE_2, "2"),
         Key(KeyEvent.KEYCODE_3, "3"),
@@ -24,10 +24,10 @@ object SoftKeyboardLayouts {
         Key(KeyEvent.KEYCODE_8, "8"),
         Key(KeyEvent.KEYCODE_9, "9"),
         Key(KeyEvent.KEYCODE_0, "0"),
-    ))
+    )
 
-    val LAYOUT_QWERTY_MOBILE = KeyboardLayout(listOf(
-        Row(listOf(
+    val LAYOUT_QWERTY_MOBILE = KeyboardLayout(
+        Row(
             Key(KeyEvent.KEYCODE_Q, "Q"),
             Key(KeyEvent.KEYCODE_W, "W"),
             Key(KeyEvent.KEYCODE_E, "E"),
@@ -38,8 +38,8 @@ object SoftKeyboardLayouts {
             Key(KeyEvent.KEYCODE_I, "I"),
             Key(KeyEvent.KEYCODE_O, "O"),
             Key(KeyEvent.KEYCODE_P, "P"),
-        )),
-        Row(listOf(
+        ),
+        Row(
             Spacer(0.5f),
             Key(KeyEvent.KEYCODE_A, "A"),
             Key(KeyEvent.KEYCODE_S, "S"),
@@ -51,8 +51,8 @@ object SoftKeyboardLayouts {
             Key(KeyEvent.KEYCODE_K, "K"),
             Key(KeyEvent.KEYCODE_L, "L"),
             Spacer(0.5f),
-        )),
-        Row(listOf(
+        ),
+        Row(
             Key(KeyEvent.KEYCODE_SHIFT_LEFT, null, iconType = KeyIconType.Shift, width = 1.5f, type = KeyType.Modifier),
             Key(KeyEvent.KEYCODE_Z, "Z"),
             Key(KeyEvent.KEYCODE_X, "X"),
@@ -62,8 +62,8 @@ object SoftKeyboardLayouts {
             Key(KeyEvent.KEYCODE_N, "N"),
             Key(KeyEvent.KEYCODE_M, "M"),
             Key(KeyEvent.KEYCODE_DEL, null, iconType = KeyIconType.Backspace, width = 1.5f, repeatable = true, type = KeyType.Modifier),
-        )),
+        ),
         ROW_BOTTOM,
-    ), 220f)
+    )
 
 }
