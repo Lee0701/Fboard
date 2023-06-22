@@ -2,6 +2,7 @@ package ee.oyatl.ime.f.ko
 
 import android.graphics.drawable.Drawable
 import ee.oyatl.ime.f.common.DefaultFboardIMEBase
+import ee.oyatl.ime.f.common.input.CharOverrideTable
 import ee.oyatl.ime.f.common.input.LayeredCodeConvertTable
 import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.view.InputViewManager
@@ -12,7 +13,8 @@ import ee.oyatl.ime.f.ko.hangul.HangulCombiner
 class FboardIMEKorean: DefaultFboardIMEBase(
     params = generateInputViewParams(),
 ) {
-    private val convertTable = HangulTables.LAYOUT_2SET_KS
+    override val convertTable = HangulTables.LAYOUT_2SET_KS
+    override val overrideTable: CharOverrideTable = CharOverrideTable()
     private val jamoCombinationTable = HangulTables.COMB_2SET_STANDARD
     private val hangulCombiner = HangulCombiner(jamoCombinationTable)
 
@@ -59,8 +61,9 @@ class FboardIMEKorean: DefaultFboardIMEBase(
             onReset()
             if(char > 0) inputConnection.commitText(char.toChar().toString(), 1)
         } else {
+            val override = overrideTable[converted]
             val (text, newStates) =
-                hangulCombiner.combine(hangulState, converted)
+                hangulCombiner.combine(hangulState, override ?: converted)
             if(text.isNotEmpty()) {
                 stateStack.clear()
                 inputConnection.commitText(text, 1)

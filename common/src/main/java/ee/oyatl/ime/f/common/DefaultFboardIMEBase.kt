@@ -8,6 +8,8 @@ import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import ee.oyatl.ime.f.common.input.CharOverrideTable
+import ee.oyatl.ime.f.common.input.CodeConvertTable
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
@@ -17,14 +19,17 @@ abstract class DefaultFboardIMEBase(
     final override val params: InputViewManager.Params,
 ): FboardIMEBase(), InputViewManager, KeyboardListener, IMESwitcher {
 
+    abstract val convertTable: CodeConvertTable
+    abstract val overrideTable: CharOverrideTable
+    protected val keyCharacterMap: KeyCharacterMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD)
+    final override val keyboardListener: KeyboardListener = this
+
     val doubleTapGap: Int = 500
 
     protected var modifierState: ModifierState = ModifierState()
     protected var shiftClickedTime: Long = 0
     protected var inputRecorded: Boolean = false
 
-    protected val keyCharacterMap: KeyCharacterMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD)
-    final override val keyboardListener: KeyboardListener = this
 
     open val inputViewManager: InputViewManager =
         DefaultInputViewManager(keyboardListener, params)

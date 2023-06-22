@@ -10,10 +10,6 @@ class SimpleCodeConvertTable(
         value.explode().map { (entryKey, charCode) -> (charCode to entryKey) to key }
     }.toMap()
 
-    override fun get(keyCode: Int, state: ModifierState): Int? {
-        return map[keyCode]?.withKeyboardState(state)
-    }
-
     override fun getAllForState(state: ModifierState): Map<Int, Int> {
         return map.map { (k, v) -> v.withKeyboardState(state)?.let { k to it } }
             .filterNotNull()
@@ -24,7 +20,11 @@ class SimpleCodeConvertTable(
         return reversedMap[charCode to entryKey]
     }
 
-    override fun plus(table: CodeConvertTable): CodeConvertTable {
+    override operator fun get(keyCode: Int, state: ModifierState): Int? {
+        return map[keyCode]?.withKeyboardState(state)
+    }
+
+    override operator fun plus(table: CodeConvertTable): CodeConvertTable {
         return when(table) {
             is SimpleCodeConvertTable -> this + table
             is LayeredCodeConvertTable -> this + table

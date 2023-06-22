@@ -18,10 +18,6 @@ class LayeredCodeConvertTable(
         return layers[layerId]?.getAllForState(state)?: mapOf()
     }
 
-    override fun get(keyCode: Int, state: ModifierState): Int? {
-        return get(BASE_LAYER_NAME)?.get(keyCode, state)
-    }
-
     override fun getAllForState(state: ModifierState): Map<Int, Int> {
         return getAllForState(BASE_LAYER_NAME, state)
     }
@@ -34,7 +30,11 @@ class LayeredCodeConvertTable(
         return get(layerId)?.getReversed(charCode, entryKey)
     }
 
-    override fun plus(table: CodeConvertTable): CodeConvertTable {
+    override operator fun get(keyCode: Int, state: ModifierState): Int? {
+        return get(BASE_LAYER_NAME)?.get(keyCode, state)
+    }
+
+    override operator fun plus(table: CodeConvertTable): CodeConvertTable {
         return when(table) {
             is SimpleCodeConvertTable -> this + table
             is LayeredCodeConvertTable -> this + table
