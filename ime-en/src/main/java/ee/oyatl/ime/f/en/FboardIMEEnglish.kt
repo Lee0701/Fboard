@@ -9,10 +9,7 @@ class FboardIMEEnglish: DefaultFboardIMEBase(
     params = generateInputViewParams(),
 ) {
 
-    override fun init() {
-    }
-
-    override fun destroy() {
+    override fun onUpdate() {
     }
 
     companion object {

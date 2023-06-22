@@ -1,6 +1,7 @@
 package ee.oyatl.ime.f.common.view
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
 import android.view.KeyEvent
@@ -28,32 +29,50 @@ abstract class DefaultFboardIMEBase(
         else -> this
     }
 
-    abstract fun init()
-    abstract fun destroy()
+    open fun onUpdate() = Unit
+    open fun onReset() = Unit
+    open fun onPrintingKey(keyCode: Int): Boolean = false
+    open fun onDeleteKey(): Boolean = false
+    open fun onSpace(): Boolean = false
+    open fun onActionKey(): Boolean = false
+    private fun onLanguageKey(): Boolean {
+        return imeSwitcher.next()
+    }
 
     override fun onCreate() {
         super.onCreate()
-        this.init()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        this.destroy()
     }
 
     override fun onCreateInputView(): View {
-        return this.createInputView(this)
+        val view = this.createView(this)
+        this.onUpdate()
+        return view
     }
 
-    override fun createInputView(context: Context): View {
-        return inputViewManager.createInputView(context)
+    override fun createView(context: Context): View {
+        return inputViewManager.createView(context)
+    }
+
+    override fun updateLabelsAndIcons(labels: Map<Int, CharSequence>, icons: Map<Int, Drawable>) {
+        inputViewManager.updateLabelsAndIcons(labels, icons)
     }
 
     override fun onKeyClick(code: Int, output: String?) {
-        when(code) {
+        val consumed: Boolean = if(isPrintingKey(code)) {
+            onPrintingKey(code)
+        } else when(code) {
+            KeyEvent.KEYCODE_DEL -> onDeleteKey()
+            KeyEvent.KEYCODE_SPACE -> onSpace()
+            KeyEvent.KEYCODE_ENTER -> onActionKey()
             KeyEvent.KEYCODE_LANGUAGE_SWITCH -> onLanguageKey()
-            else -> sendDownUpKeyEvents(code)
+            else -> false
         }
+        if(!consumed) sendDownUpKeyEvents(code)
+        this.onUpdate()
     }
 
     override fun onKeyLongClick(code: Int, output: String?) {
@@ -68,12 +87,10 @@ abstract class DefaultFboardIMEBase(
     override fun onKeyFlick(direction: FlickDirection, code: Int, output: String?) {
     }
 
+    private fun isPrintingKey(code: Int): Boolean = KeyEvent(KeyEvent.ACTION_DOWN, code).isPrintingKey
+
     override fun current(): String {
         return Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD)
-    }
-
-    private fun onLanguageKey() {
-        imeSwitcher.next()
     }
 
 }
