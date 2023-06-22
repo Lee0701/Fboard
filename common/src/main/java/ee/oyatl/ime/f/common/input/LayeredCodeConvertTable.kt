@@ -1,5 +1,7 @@
 package ee.oyatl.ime.f.common.input
 
+import ee.oyatl.ime.f.common.ModifierState
+
 class LayeredCodeConvertTable(
     val layers: Map<String, CodeConvertTable>,
 ): CodeConvertTable {
@@ -8,19 +10,19 @@ class LayeredCodeConvertTable(
         return layers[layerId]
     }
 
-    fun get(layerId: String, keyCode: Int, state: KeyboardState): Int? {
+    fun get(layerId: String, keyCode: Int, state: ModifierState): Int? {
         return get(layerId)?.get(keyCode, state) ?: get(BASE_LAYER_NAME)?.get(keyCode, state)
     }
 
-    fun getAllForState(layerId: String, state: KeyboardState): Map<Int, Int> {
+    fun getAllForState(layerId: String, state: ModifierState): Map<Int, Int> {
         return layers[layerId]?.getAllForState(state)?: mapOf()
     }
 
-    override fun get(keyCode: Int, state: KeyboardState): Int? {
+    override fun get(keyCode: Int, state: ModifierState): Int? {
         return get(BASE_LAYER_NAME)?.get(keyCode, state)
     }
 
-    override fun getAllForState(state: KeyboardState): Map<Int, Int> {
+    override fun getAllForState(state: ModifierState): Map<Int, Int> {
         return getAllForState(BASE_LAYER_NAME, state)
     }
 

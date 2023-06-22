@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.common.view.data
+package ee.oyatl.ime.f.common.layouts
 
 import android.view.KeyEvent
 import ee.oyatl.ime.f.common.view.model.*

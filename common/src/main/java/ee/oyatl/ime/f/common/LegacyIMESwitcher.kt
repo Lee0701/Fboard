@@ -1,14 +1,13 @@
-package ee.oyatl.ime.f.common.view
+package ee.oyatl.ime.f.common
 
 import android.content.ContentResolver
 import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
-import ee.oyatl.ime.f.common.FboardIMEBase
 
 @Suppress("DEPRECATION")
-class LegacyIMESwitcher(service: InputMethodService): ee.oyatl.ime.f.common.IMESwitcher {
+class LegacyIMESwitcher(service: InputMethodService): IMESwitcher {
 
     private val imm = service.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     private val contentResolver: ContentResolver = service.contentResolver

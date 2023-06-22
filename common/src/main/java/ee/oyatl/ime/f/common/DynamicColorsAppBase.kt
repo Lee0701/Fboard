@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.common.view
+package ee.oyatl.ime.f.common
 
 import com.google.android.material.color.DynamicColors
 import ee.oyatl.ime.f.common.FboardAppBase

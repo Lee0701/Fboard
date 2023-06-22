@@ -2,10 +2,9 @@ package ee.oyatl.ime.f.ko
 
 import android.graphics.drawable.Drawable
 import android.view.KeyCharacterMap
-import ee.oyatl.ime.f.common.input.KeyboardState
 import ee.oyatl.ime.f.common.input.LayeredCodeConvertTable
-import ee.oyatl.ime.f.common.view.DefaultFboardIMEBase
-import ee.oyatl.ime.f.common.view.data.SoftKeyboardLayouts
+import ee.oyatl.ime.f.common.DefaultFboardIMEBase
+import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.Themes
 import ee.oyatl.ime.f.ko.data.HangulTables
@@ -16,8 +15,6 @@ class FboardIMEKorean: DefaultFboardIMEBase(
 ) {
     private val convertTable = HangulTables.LAYOUT_2SET_KS
     private val jamoCombinationTable = HangulTables.COMB_2SET_STANDARD
-
-    private val keyCharacterMap: KeyCharacterMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD)
     private val hangulCombiner = HangulCombiner(jamoCombinationTable)
 
     private val stateStack: MutableList<HangulCombiner.State> = mutableListOf()
@@ -40,7 +37,7 @@ class FboardIMEKorean: DefaultFboardIMEBase(
 
     override fun onUpdate() {
         val inputConnection = currentInputConnection ?: return
-        val state = KeyboardState()
+        val state = modifierState
         val labels = convertTable
             .getAllForState(state)
             .mapValues { (key, value) -> value.toChar().toString() }
@@ -54,7 +51,7 @@ class FboardIMEKorean: DefaultFboardIMEBase(
 
     override fun onPrintingKey(keyCode: Int): Boolean {
         val inputConnection = currentInputConnection ?: return false
-        val state = KeyboardState()
+        val state = modifierState
         val converted =
             if(convertTable is LayeredCodeConvertTable) convertTable.get(layerIdByHangulState, keyCode, state)
             else convertTable.get(keyCode, state)

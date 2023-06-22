@@ -1,12 +1,12 @@
-package ee.oyatl.ime.f.common.input
+package ee.oyatl.ime.f.common
 
 import android.view.KeyEvent
 
-data class KeyboardState(
-    val shiftState: ModifierState = ModifierState(),
-    val altState: ModifierState = ModifierState(),
-    val controlState: ModifierState = ModifierState(),
-    val metaState: ModifierState = ModifierState(),
+data class ModifierState(
+    val shiftState: Item = Item(),
+    val altState: Item = Item(),
+    val controlState: Item = Item(),
+    val metaState: Item = Item(),
 ) {
     fun asMetaState(): Int {
         var result = 0
@@ -16,4 +16,9 @@ data class KeyboardState(
         result = result or if(metaState.pressed || metaState.pressing) KeyEvent.META_META_ON else 0
         return result
     }
+    data class Item(
+        val pressed: Boolean = false,
+        val locked: Boolean = false,
+        val pressing: Boolean = pressed,
+    )
 }

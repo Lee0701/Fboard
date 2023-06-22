@@ -1,5 +1,7 @@
 package ee.oyatl.ime.f.common.input
 
+import ee.oyatl.ime.f.common.ModifierState
+
 class SimpleCodeConvertTable(
     val map: Map<Int, Entry> = mapOf(),
 ): CodeConvertTable {
@@ -8,11 +10,11 @@ class SimpleCodeConvertTable(
         value.explode().map { (entryKey, charCode) -> (charCode to entryKey) to key }
     }.toMap()
 
-    override fun get(keyCode: Int, state: KeyboardState): Int? {
+    override fun get(keyCode: Int, state: ModifierState): Int? {
         return map[keyCode]?.withKeyboardState(state)
     }
 
-    override fun getAllForState(state: KeyboardState): Map<Int, Int> {
+    override fun getAllForState(state: ModifierState): Map<Int, Int> {
         return map.map { (k, v) -> v.withKeyboardState(state)?.let { k to it } }
             .filterNotNull()
             .toMap()
@@ -46,7 +48,7 @@ class SimpleCodeConvertTable(
         val alt: Int? = base,
         val altShift: Int? = shift,
     ) {
-        fun withKeyboardState(keyboardState: KeyboardState): Int? {
+        fun withKeyboardState(keyboardState: ModifierState): Int? {
             val shiftPressed = keyboardState.shiftState.pressed || keyboardState.shiftState.pressing
             val altPressed = keyboardState.altState.pressed || keyboardState.altState.pressing
             return if(keyboardState.shiftState.locked) capsLock
@@ -78,7 +80,7 @@ class SimpleCodeConvertTable(
     enum class EntryKey {
         Base, Shift, CapsLock, Alt, AltShift;
         companion object {
-            fun fromKeyboardState(keyboardState: KeyboardState): EntryKey {
+            fun fromKeyboardState(keyboardState: ModifierState): EntryKey {
                 return if(keyboardState.altState.pressed && keyboardState.shiftState.pressed) AltShift
                 else if(keyboardState.altState.pressed) Alt
                 else if(keyboardState.shiftState.locked) CapsLock
