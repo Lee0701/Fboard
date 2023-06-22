@@ -8,6 +8,7 @@ import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.core.content.ContextCompat
 import ee.oyatl.ime.f.common.input.CharOverrideTable
 import ee.oyatl.ime.f.common.input.CodeConvertTable
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
@@ -29,7 +30,6 @@ abstract class DefaultFboardIMEBase(
     protected var modifierState: ModifierState = ModifierState()
     protected var shiftClickedTime: Long = 0
     protected var inputRecorded: Boolean = false
-
 
     open val inputViewManager: InputViewManager =
         DefaultInputViewManager(keyboardListener, params)
@@ -113,7 +113,14 @@ abstract class DefaultFboardIMEBase(
     }
 
     override fun updateLabelsAndIcons(labels: Map<Int, CharSequence>, icons: Map<Int, Drawable>) {
-        inputViewManager.updateLabelsAndIcons(labels, icons)
+        inputViewManager.updateLabelsAndIcons(labels, getIcons() + icons)
+    }
+
+    private fun getIcons(): Map<Int, Drawable> {
+        val shiftIconID = if(modifierState.shiftState.locked) R.drawable.keyic_shift_lock else R.drawable.keyic_shift
+        val shiftIcon = ContextCompat.getDrawable(this, shiftIconID)
+        val icons = shiftIcon?.let { mapOf(KeyEvent.KEYCODE_SHIFT_LEFT to it, KeyEvent.KEYCODE_SHIFT_RIGHT to it) }.orEmpty()
+        return icons
     }
 
     override fun onKeyClick(code: Int, output: String?) {
@@ -173,7 +180,7 @@ abstract class DefaultFboardIMEBase(
         onUpdate()
     }
 
-    private fun isPrintingKey(code: Int): Boolean = KeyEvent(KeyEvent.ACTION_DOWN, code).isPrintingKey
+    fun isPrintingKey(code: Int): Boolean = KeyEvent(KeyEvent.ACTION_DOWN, code).isPrintingKey
 
     override fun current(): String {
         return Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD)

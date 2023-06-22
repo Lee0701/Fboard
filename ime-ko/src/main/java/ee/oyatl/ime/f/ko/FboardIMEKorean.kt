@@ -43,7 +43,7 @@ class FboardIMEKorean: DefaultFboardIMEBase(
             .getAllForState(state)
             .mapValues { (key, value) -> value.toChar().toString() }
         val icons = mapOf<Int, Drawable>()
-        inputViewManager.updateLabelsAndIcons(
+        updateLabelsAndIcons(
             labels = labels,
             icons = icons,
         )

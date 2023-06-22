@@ -22,7 +22,7 @@ class FboardIMEEnglish: DefaultFboardIMEBase(
             .map { code -> code to keyCharacterMap.get(code, state.asMetaState()).toChar().toString() }
             .toMap()
         val icons = mapOf<Int, Drawable>()
-        inputViewManager.updateLabelsAndIcons(
+        updateLabelsAndIcons(
             labels = labels,
             icons = icons,
         )
