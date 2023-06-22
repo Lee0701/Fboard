@@ -9,6 +9,12 @@ class FboardIMEKorean: DefaultFboardIMEBase(
     params = generateInputViewParams(),
 ) {
 
+    override fun init() {
+    }
+
+    override fun destroy() {
+    }
+
     companion object {
         fun generateInputViewParams(): InputViewManager.Params = InputViewManager.Params(
             keyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE,
