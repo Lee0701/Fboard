@@ -42,6 +42,11 @@ abstract class SettingsActivityBase: AppCompatActivity() {
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
     }
 
+    override fun onPause() {
+        super.onPause()
+        syncSettings(this)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
     }
@@ -58,12 +63,14 @@ abstract class SettingsActivityBase: AppCompatActivity() {
         }
     }
 
+    private fun getFloatValue(value: Any): Float {
+        if(value is Float) return value
+        if(value is Int) return value.toFloat()
+        throw IllegalArgumentException("Value $value could not be converted to Float")
+    }
+
     private fun importSettings() {
-        fun getFloat(value: Any): Float {
-            if(value is Float) return value
-            if(value is Int) return value.toFloat()
-            throw IllegalArgumentException("Value $value could not be converted to Float")
-        }
+        moveTaskToBack(true)
         val editor = pref.edit()
         val json = JSONArray(intent.getStringExtra("json") ?: "[]")
         (0 until json.length()).forEach { idx ->
@@ -75,7 +82,7 @@ abstract class SettingsActivityBase: AppCompatActivity() {
             when(type) {
                 Boolean::class.simpleName -> editor.putBoolean(key, value as Boolean)
                 Int::class.simpleName -> editor.putInt(key, value as Int)
-                Float::class.simpleName -> editor.putFloat(key, getFloat(value))
+                Float::class.simpleName -> editor.putFloat(key, getFloatValue(value))
                 String::class.simpleName -> editor.putString(key, value as String)
                 Set::class.simpleName -> editor.putStringSet(key, value as MutableSet<String>?)
             }

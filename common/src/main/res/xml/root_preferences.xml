@@ -51,10 +51,6 @@
             app:defaultValue="true"
             app:title="@string/pref_appearance_sound_feedback_title" />
 
-        <ee.oyatl.ime.f.common.settings.SyncSettingsPreference
-            app:title="@string/pref_sync_settings_title"
-            app:summary="@string/pref_sync_settings_summary" />
-
     </ee.oyatl.ime.f.common.settings.PreferenceCategory>
 
 </PreferenceScreen>
