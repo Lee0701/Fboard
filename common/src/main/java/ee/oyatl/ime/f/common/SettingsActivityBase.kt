@@ -19,7 +19,7 @@ abstract class SettingsActivityBase: AppCompatActivity(), OnSharedPreferenceChan
     private val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
 
     abstract val prefResId: Int
-    private var invalidate: Boolean = false
+    private var invalidated: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,7 @@ abstract class SettingsActivityBase: AppCompatActivity(), OnSharedPreferenceChan
 
     override fun onStop() {
         super.onStop()
-        invalidate = true
+        invalidated = true
         syncSettings(this)
     }
 
@@ -62,13 +62,13 @@ abstract class SettingsActivityBase: AppCompatActivity(), OnSharedPreferenceChan
     }
 
     override fun onSharedPreferenceChanged(pref: SharedPreferences?, key: String?) {
-        if(invalidate) {
+        if(invalidated) {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.settings, SettingsFragment(prefResId))
                 .commitAllowingStateLoss()
         }
-        invalidate = false
+        invalidated = false
     }
 
     companion object {
