@@ -16,7 +16,7 @@
 <!-- Layout used for PreferenceCategory in a PreferenceActivity. -->
 <androidx.appcompat.widget.AppCompatTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:theme="@style/Theme.MBoard.PreferenceCategory.Title"
+    android:theme="@style/Theme.Fboard.PreferenceCategory.Title"
     android:id="@android:id/title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

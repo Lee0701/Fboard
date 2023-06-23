@@ -50,7 +50,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@android:id/title"
                 tools:text="Title"
-                android:theme="@style/Theme.MBoard.Preference.Title"
+                android:theme="@style/Theme.Fboard.Preference.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -60,7 +60,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@android:id/summary"
                 tools:text="summary for this setting."
-                android:theme="@style/Theme.MBoard.Preference.Summary"
+                android:theme="@style/Theme.Fboard.Preference.Summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/title"
