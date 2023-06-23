@@ -11,8 +11,12 @@ class ChooseInputMethodPreference(
     attrs: AttributeSet?,
 ): Preference(context, attrs) {
     init {
+        val appName = context.getString(R.string.app_name)
+        this.title = title.toString().format(appName)
+        this.summary = summary.toString().format(appName)
         layoutResource = R.layout.preference_inline
     }
+
     override fun onClick() {
         val inputMethodManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

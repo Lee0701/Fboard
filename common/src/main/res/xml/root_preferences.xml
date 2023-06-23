@@ -2,4 +2,17 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ee.oyatl.ime.f.common.settings.PreferenceCategory
+        app:title="@string/pref_header_method_title">
+
+        <ee.oyatl.ime.f.common.settings.EnableInputMethodPreference
+            app:title="@string/pref_method_enable_title"
+            app:summary="@string/pref_method_enable_summary" />
+
+        <ee.oyatl.ime.f.common.settings.ChooseInputMethodPreference
+            app:title="@string/pref_method_choose_title"
+            app:summary="@string/pref_method_choose_summary" />
+    </ee.oyatl.ime.f.common.settings.PreferenceCategory>
+
 </PreferenceScreen>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fboard</string>
+
+    <string name="title_activity_settings">Fboard Settings</string>
+
+    <string name="pref_header_method_title">Input Method</string>
+    <string name="pref_method_enable_title">Enable Input Method</string>
+    <string name="pref_method_enable_summary">Select \'%s\' to enable.</string>
+    <string name="pref_method_choose_title">Choose Input Method</string>
+    <string name="pref_method_choose_summary">Choose \'%s\' to start using.</string>
+
+</resources>
