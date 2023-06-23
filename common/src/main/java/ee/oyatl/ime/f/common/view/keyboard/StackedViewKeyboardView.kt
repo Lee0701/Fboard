@@ -21,9 +21,9 @@ import kotlin.math.roundToInt
 class StackedViewKeyboardView(
     context: Context,
     attrs: AttributeSet?,
+    listener: KeyboardListener,
     keyboard: KeyboardLayout,
     theme: Theme,
-    listener: KeyboardListener,
     unifyHeight: Boolean,
     rowHeight: Int,
     disableTouch: Boolean = false,

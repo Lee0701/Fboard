@@ -21,9 +21,9 @@ class DefaultInputViewManager(
         ).toInt()
         val keyboardView = StackedViewKeyboardView(
             context, null,
+            listener = keyboardListener,
             keyboard = params.keyboardLayout,
             theme = params.keyboardTheme,
-            listener = keyboardListener,
             unifyHeight = params.unifyHeight,
             rowHeight = rowHeight,
         )

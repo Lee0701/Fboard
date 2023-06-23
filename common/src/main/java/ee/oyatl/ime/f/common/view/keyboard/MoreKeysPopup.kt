@@ -48,7 +48,13 @@ class MoreKeysPopup(
     val theme = Themes.ofName(preferences.getString("appearance_theme", "theme_dynamic"))
     private val keyboardViewType = preferences.getString("appearance_keyboard_view_type", "canvas") ?: "canvas"
     private val keyboardView: KeyboardView = StackedViewKeyboardView(
-        context, null, keyboard, theme, this, false, keyHeight.roundToInt())
+        context, null,
+        listener = this,
+        keyboard = keyboard,
+        theme = theme,
+        unifyHeight = false,
+        rowHeight = keyHeight.roundToInt()
+    )
     private var pointedKey: KeyboardView.KeyWrapper? = null
 
     private val animator: Animator = ValueAnimator.ofFloat(1f, 0f).apply {
