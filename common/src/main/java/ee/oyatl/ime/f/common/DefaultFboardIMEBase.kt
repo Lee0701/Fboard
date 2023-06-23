@@ -151,8 +151,8 @@ abstract class DefaultFboardIMEBase
         }
         if(isPrintingKey) {
             inputRecorded = true
-            autoUnshift()
         }
+        autoUnshift()
         this.onUpdate()
     }
 
