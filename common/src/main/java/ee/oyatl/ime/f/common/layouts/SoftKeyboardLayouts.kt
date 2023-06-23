@@ -5,7 +5,7 @@ import ee.oyatl.ime.f.common.view.model.*
 
 object SoftKeyboardLayouts {
     val ROW_BOTTOM = Row(
-        Key(KeyEvent.KEYCODE_SYM, null, "?12", width = 1.5f, type = KeyType.Modifier),
+        Key(KeyEvent.KEYCODE_SYM, null, iconType = KeyIconType.Symbol, width = 1.5f, type = KeyType.Modifier),
         Key(KeyEvent.KEYCODE_COMMA, ",", type = KeyType.AlphanumericAlt),
         Key(KeyEvent.KEYCODE_LANGUAGE_SWITCH, null, iconType = KeyIconType.Language, type = KeyType.ModifierAlt),
         Key(KeyEvent.KEYCODE_SPACE, null, "", width = 4f, type = KeyType.Space),
