@@ -13,6 +13,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import androidx.preference.PreferenceManager
+import ee.oyatl.ime.f.common.settings.SettingsActivity
 import ee.oyatl.ime.f.common.view.model.Key
 import ee.oyatl.ime.f.common.view.model.KeyType
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
@@ -32,7 +33,8 @@ abstract class KeyboardView(
     rowHeight: Int,
     private val disableTouch: Boolean = false,
 ): FrameLayout(context, attrs) {
-    private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val preferences: SharedPreferences =
+        context.getSharedPreferences(SettingsActivity.SHARED_PREF_DEFAULT, 0)
     private val rect = Rect()
 
     open val keyboardWidth: Int = context.resources.displayMetrics.widthPixels

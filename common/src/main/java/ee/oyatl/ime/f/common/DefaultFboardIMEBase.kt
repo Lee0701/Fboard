@@ -10,23 +10,23 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
-import ee.oyatl.ime.f.core.table.CharOverrideTable
-import ee.oyatl.ime.f.core.table.CodeConvertTable
+import ee.oyatl.ime.f.common.settings.SettingsActivity
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
 import ee.oyatl.ime.f.core.input.ModifierState
+import ee.oyatl.ime.f.core.table.CharOverrideTable
+import ee.oyatl.ime.f.core.table.CodeConvertTable
 
 abstract class DefaultFboardIMEBase
     : FboardIMEBase(), KeyboardListener, IMESwitcher, OnSharedPreferenceChangeListener {
-    private val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
+    private val pref: SharedPreferences get() = getSharedPreferences(SettingsActivity.SHARED_PREF_DEFAULT, 0)
 
     abstract val convertTable: CodeConvertTable
     abstract val overrideTable: CharOverrideTable
     protected val keyCharacterMap: KeyCharacterMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD)
-    val inputViewManager: InputViewManager by lazy {
+    protected val inputViewManager: InputViewManager by lazy {
         DefaultInputViewManager(
             this,
             InputViewManager.generateInputViewParams(pref),
@@ -191,6 +191,5 @@ abstract class DefaultFboardIMEBase
     }
 
     override fun onSharedPreferenceChanged(p: SharedPreferences?, k: String?) {
-        val pref = p ?: return
     }
 }
