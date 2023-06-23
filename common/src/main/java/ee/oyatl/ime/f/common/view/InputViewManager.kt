@@ -25,13 +25,13 @@ interface InputViewManager {
     )
 
     companion object {
-        fun generateInputViewParams(pref: SharedPreferences): InputViewManager.Params {
+        fun generateInputViewParams(pref: SharedPreferences, layout: KeyboardLayout): Params {
             val themeId = pref.getString("appearance_theme", "theme_dynamic")
             val theme = Themes.of(themeId)
             val unifyHeight = pref.getBoolean("appearance_unify_height", false)
             val rowHeight = pref.getFloat("appearance_keyboard_height", 55f)
-            return InputViewManager.Params(
-                keyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE,
+            return Params(
+                keyboardLayout = layout,
                 keyboardTheme = theme,
                 unifyHeight = unifyHeight,
                 rowHeight = rowHeight.toInt(),
