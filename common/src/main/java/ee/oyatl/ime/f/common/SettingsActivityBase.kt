@@ -11,6 +11,7 @@ import androidx.core.view.WindowCompat
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.android.material.elevation.SurfaceColors
+import org.json.JSONArray
 import org.json.JSONObject
 
 abstract class SettingsActivityBase: AppCompatActivity() {
@@ -20,8 +21,8 @@ abstract class SettingsActivityBase: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sync = maybeSyncSettings()
-        if(sync) return finish()
+        val synced = maybeImportSettings()
+        if(synced) return finish()
 
         setContentView(R.layout.activity_settings)
         supportFragmentManager
@@ -45,26 +46,41 @@ abstract class SettingsActivityBase: AppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun maybeSyncSettings(): Boolean {
-        if(intent.action == Intent.ACTION_SEND && intent.type == "application/json") {
-            val editor = pref.edit()
-            val json = JSONObject(intent.getStringExtra("json") ?: "{}")
-            json.keys().forEach { key ->
-                val value = json.get(key)
-                @Suppress("UNCHECKED_CAST")
-                when(value) {
-                    is Boolean -> editor.putBoolean(key, value)
-                    is Int -> editor.putInt(key, value)
-                    is Float -> editor.putFloat(key, value)
-                    is String -> editor.putString(key, value)
-                    is Set<*> -> editor.putStringSet(key, value as MutableSet<String>?)
-                }
-            }
-            editor.apply()
+    private fun maybeImportSettings(): Boolean {
+        if(intent.action == Intent.ACTION_SEND
+            && intent.type == "application/json"
+            && intent.`package` == packageName) {
+
+            importSettings()
             return true
         } else {
             return false
         }
+    }
+
+    private fun importSettings() {
+        fun getFloat(value: Any): Float {
+            if(value is Float) return value
+            if(value is Int) return value.toFloat()
+            throw IllegalArgumentException("Value $value could not be converted to Float")
+        }
+        val editor = pref.edit()
+        val json = JSONArray(intent.getStringExtra("json") ?: "[]")
+        (0 until json.length()).forEach { idx ->
+            val entry = json.getJSONObject(idx)
+            val key = entry.getString("key")
+            val type = entry.getString("type")
+            val value = entry.get("value")
+            @Suppress("UNCHECKED_CAST")
+            when(type) {
+                Boolean::class.simpleName -> editor.putBoolean(key, value as Boolean)
+                Int::class.simpleName -> editor.putInt(key, value as Int)
+                Float::class.simpleName -> editor.putFloat(key, getFloat(value))
+                String::class.simpleName -> editor.putString(key, value as String)
+                Set::class.simpleName -> editor.putStringSet(key, value as MutableSet<String>?)
+            }
+        }
+        editor.apply()
     }
 
     class SettingsFragment(
@@ -90,15 +106,23 @@ abstract class SettingsActivityBase: AppCompatActivity() {
                 "appearance_haptic_feedback",
                 "appearance_sound_feedback",
             )
-            val json = JSONObject().apply {
+            val json = JSONArray().apply {
                 keys.forEach { key ->
-                    val value: Any = pref.all.entries.find { it.key == key }?.value ?: return
+                    val value: Any = pref.all.entries.find { it.key == key }?.value ?: return@forEach
+                    val type = value::class.simpleName
+                    val entry = JSONObject().apply {
+                        put("key", key)
+                        put("type", type)
+                        put("value", value)
+                    }
+                    put(entry)
                 }
             }
             packages.forEach { pkg ->
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     `package` = pkg
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     type = "application/json"
                     putExtra("json", json.toString())
                 }
