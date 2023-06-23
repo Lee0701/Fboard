@@ -22,4 +22,7 @@
     <string name="pref_appearance_haptic_feedback_title">Haptic Feedback</string>
     <string name="pref_appearance_sound_feedback_title">Sound Feedback</string>
 
+    <string name="pref_sync_settings_title">Sync Settings</string>
+    <string name="pref_sync_settings_summary">Sync the settings with other Fboard apps.</string>
+
 </resources>

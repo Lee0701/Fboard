@@ -10,6 +10,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
@@ -20,7 +21,7 @@ import ee.oyatl.ime.f.core.table.CodeConvertTable
 
 abstract class DefaultFboardIMEBase
     : FboardIMEBase(), KeyboardListener, IMESwitcher, OnSharedPreferenceChangeListener {
-    private val pref: SharedPreferences get() = getSharedPreferences(SettingsActivity.SHARED_PREF_DEFAULT, 0)
+    private val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
 
     abstract val convertTable: CodeConvertTable
     abstract val overrideTable: CharOverrideTable

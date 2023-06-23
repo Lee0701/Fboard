@@ -12,8 +12,9 @@ import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.common.R
-import ee.oyatl.ime.f.common.SettingsActivity
+import ee.oyatl.ime.f.common.SettingsActivityBase
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import kotlin.math.roundToInt
 
@@ -23,8 +24,7 @@ class MoreKeysPopup(
     val keyboard: KeyboardLayout,
     val listener: KeyboardListener,
 ): KeyboardPopup(context, key), KeyboardListener {
-    private val preferences =
-        context.getSharedPreferences(SettingsActivity.SHARED_PREF_DEFAULT, 0)
+    private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val wrappedContext = ContextThemeWrapper(
         context,
         R.style.Theme_Fboard_Keyboard_KeyPopup,

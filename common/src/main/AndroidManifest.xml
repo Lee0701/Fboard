@@ -4,16 +4,4 @@
         <package android:name="ee.oyatl.ime.f.en" />
         <package android:name="ee.oyatl.ime.f.ko" />
     </queries>
-    <application>
-        <provider
-            android:name=".settings.SharedPreferenceFileProvider"
-            android:authorities="${package}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-    </application>
 </manifest>
