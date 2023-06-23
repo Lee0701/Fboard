@@ -10,11 +10,10 @@ import ee.oyatl.ime.f.common.input.CodeConvertTable
 import ee.oyatl.ime.f.common.input.SimpleCodeConvertTable
 import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.view.InputViewManager
+import ee.oyatl.ime.f.common.view.InputViewManager.Companion.generateInputViewParams
 import ee.oyatl.ime.f.common.view.keyboard.Themes
 
 class FboardIMEEnglish: DefaultFboardIMEBase() {
-    val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
-    override val params: InputViewManager.Params get() = generateInputViewParams(pref)
 
     override val overrideTable: CharOverrideTable = CharOverrideTable()
     override val convertTable: CodeConvertTable = SimpleCodeConvertTable()
@@ -44,18 +43,4 @@ class FboardIMEEnglish: DefaultFboardIMEBase() {
         }
     }
 
-    companion object {
-        fun generateInputViewParams(pref: SharedPreferences): InputViewManager.Params {
-            val themeId = pref.getString("appearance_theme", "theme_dynamic")
-            val theme = Themes.of(themeId)
-            val unifyHeight = pref.getBoolean("appearance_unify_height", false)
-            val rowHeight = pref.getFloat("appearance_keyboard_height", 55f)
-            return InputViewManager.Params(
-                keyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE,
-                keyboardTheme = theme,
-                unifyHeight = unifyHeight,
-                rowHeight = rowHeight.toInt(),
-            )
-        }
-    }
 }

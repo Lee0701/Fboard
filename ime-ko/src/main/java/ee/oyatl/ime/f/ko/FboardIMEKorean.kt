@@ -13,8 +13,6 @@ import ee.oyatl.ime.f.ko.data.HangulTables
 import ee.oyatl.ime.f.ko.hangul.HangulCombiner
 
 class FboardIMEKorean: DefaultFboardIMEBase() {
-    val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
-    override val params: InputViewManager.Params get() = generateInputViewParams(pref)
 
     override val convertTable = HangulTables.LAYOUT_2SET_KS
     override val overrideTable: CharOverrideTable = CharOverrideTable()
@@ -98,18 +96,4 @@ class FboardIMEKorean: DefaultFboardIMEBase() {
         return super.onActionKey()
     }
 
-    companion object {
-        fun generateInputViewParams(pref: SharedPreferences): InputViewManager.Params {
-            val themeId = pref.getString("appearance_theme", "theme_dynamic")
-            val theme = Themes.of(themeId)
-            val unifyHeight = pref.getBoolean("appearance_unify_height", false)
-            val rowHeight = pref.getFloat("appearance_keyboard_height", 55f)
-            return InputViewManager.Params(
-                keyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE,
-                keyboardTheme = theme,
-                unifyHeight = unifyHeight,
-                rowHeight = rowHeight.toInt(),
-            )
-        }
-    }
 }

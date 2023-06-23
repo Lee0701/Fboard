@@ -5,7 +5,7 @@ import android.os.Build
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 
-abstract class FboardIMEBase: InputMethodService(), ee.oyatl.ime.f.common.IMESwitcher {
+abstract class FboardIMEBase: InputMethodService(), IMESwitcher {
     @RequiresApi(Build.VERSION_CODES.P)
     override fun previous(): Boolean {
         return this.switchToPreviousInputMethod()
