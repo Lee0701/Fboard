@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string-array name="sync_settings_packages">
+        <item>ee.oyatl.ime.f.sym</item>
         <item>ee.oyatl.ime.f.en</item>
         <item>ee.oyatl.ime.f.ko</item>
     </string-array>
