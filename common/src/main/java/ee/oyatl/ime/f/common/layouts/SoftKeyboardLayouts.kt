@@ -26,43 +26,59 @@ object SoftKeyboardLayouts {
         Key(KeyEvent.KEYCODE_0, "0"),
     )
 
+    val ROW_QWERTY_1 = Row(
+        Key(KeyEvent.KEYCODE_Q, "Q"),
+        Key(KeyEvent.KEYCODE_W, "W"),
+        Key(KeyEvent.KEYCODE_E, "E"),
+        Key(KeyEvent.KEYCODE_R, "R"),
+        Key(KeyEvent.KEYCODE_T, "T"),
+        Key(KeyEvent.KEYCODE_Y, "Y"),
+        Key(KeyEvent.KEYCODE_U, "U"),
+        Key(KeyEvent.KEYCODE_I, "I"),
+        Key(KeyEvent.KEYCODE_O, "O"),
+        Key(KeyEvent.KEYCODE_P, "P"),
+    )
+
+    val ROW_QWERTY_2 = Row(
+        Spacer(0.5f),
+        Key(KeyEvent.KEYCODE_A, "A"),
+        Key(KeyEvent.KEYCODE_S, "S"),
+        Key(KeyEvent.KEYCODE_D, "D"),
+        Key(KeyEvent.KEYCODE_F, "F"),
+        Key(KeyEvent.KEYCODE_G, "G"),
+        Key(KeyEvent.KEYCODE_H, "H"),
+        Key(KeyEvent.KEYCODE_J, "J"),
+        Key(KeyEvent.KEYCODE_K, "K"),
+        Key(KeyEvent.KEYCODE_L, "L"),
+        Spacer(0.5f),
+    )
+
+    val ROW_QWERTY_3 = Row(
+        Key(KeyEvent.KEYCODE_SHIFT_LEFT, null, iconType = KeyIconType.Shift, width = 1.5f, type = KeyType.Modifier),
+        Key(KeyEvent.KEYCODE_Z, "Z"),
+        Key(KeyEvent.KEYCODE_X, "X"),
+        Key(KeyEvent.KEYCODE_C, "C"),
+        Key(KeyEvent.KEYCODE_V, "V"),
+        Key(KeyEvent.KEYCODE_B, "B"),
+        Key(KeyEvent.KEYCODE_N, "N"),
+        Key(KeyEvent.KEYCODE_M, "M"),
+        Key(KeyEvent.KEYCODE_DEL, null, iconType = KeyIconType.Backspace, width = 1.5f, repeatable = true, type = KeyType.Modifier),
+    )
+
+    val ROW_QWERTY_2_WO_SPACER = Row(ROW_QWERTY_2.keys.drop(1).dropLast(1))
+    val SEMICOLON = Key(KeyEvent.KEYCODE_SEMICOLON, ";")
+
     val LAYOUT_QWERTY_MOBILE = KeyboardLayout(
-        Row(
-            Key(KeyEvent.KEYCODE_Q, "Q"),
-            Key(KeyEvent.KEYCODE_W, "W"),
-            Key(KeyEvent.KEYCODE_E, "E"),
-            Key(KeyEvent.KEYCODE_R, "R"),
-            Key(KeyEvent.KEYCODE_T, "T"),
-            Key(KeyEvent.KEYCODE_Y, "Y"),
-            Key(KeyEvent.KEYCODE_U, "U"),
-            Key(KeyEvent.KEYCODE_I, "I"),
-            Key(KeyEvent.KEYCODE_O, "O"),
-            Key(KeyEvent.KEYCODE_P, "P"),
-        ),
-        Row(
-            Spacer(0.5f),
-            Key(KeyEvent.KEYCODE_A, "A"),
-            Key(KeyEvent.KEYCODE_S, "S"),
-            Key(KeyEvent.KEYCODE_D, "D"),
-            Key(KeyEvent.KEYCODE_F, "F"),
-            Key(KeyEvent.KEYCODE_G, "G"),
-            Key(KeyEvent.KEYCODE_H, "H"),
-            Key(KeyEvent.KEYCODE_J, "J"),
-            Key(KeyEvent.KEYCODE_K, "K"),
-            Key(KeyEvent.KEYCODE_L, "L"),
-            Spacer(0.5f),
-        ),
-        Row(
-            Key(KeyEvent.KEYCODE_SHIFT_LEFT, null, iconType = KeyIconType.Shift, width = 1.5f, type = KeyType.Modifier),
-            Key(KeyEvent.KEYCODE_Z, "Z"),
-            Key(KeyEvent.KEYCODE_X, "X"),
-            Key(KeyEvent.KEYCODE_C, "C"),
-            Key(KeyEvent.KEYCODE_V, "V"),
-            Key(KeyEvent.KEYCODE_B, "B"),
-            Key(KeyEvent.KEYCODE_N, "N"),
-            Key(KeyEvent.KEYCODE_M, "M"),
-            Key(KeyEvent.KEYCODE_DEL, null, iconType = KeyIconType.Backspace, width = 1.5f, repeatable = true, type = KeyType.Modifier),
-        ),
+        ROW_QWERTY_1,
+        ROW_QWERTY_2,
+        ROW_QWERTY_3,
+        ROW_BOTTOM,
+    )
+
+    val LAYOUT_QWERTY_MOBILE_SEMICOLON = KeyboardLayout(
+        ROW_QWERTY_1,
+        ROW_QWERTY_2_WO_SPACER + Row(SEMICOLON),
+        ROW_QWERTY_3,
         ROW_BOTTOM,
     )
 

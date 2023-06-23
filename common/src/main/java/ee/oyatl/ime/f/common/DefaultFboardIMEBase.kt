@@ -15,6 +15,7 @@ import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
+import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.input.ModifierState
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.CodeConvertTable
@@ -25,11 +26,12 @@ abstract class DefaultFboardIMEBase
 
     abstract val convertTable: CodeConvertTable
     abstract val overrideTable: CharOverrideTable
+    abstract val keyboardLayout: KeyboardLayout
     protected val keyCharacterMap: KeyCharacterMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD)
     protected val inputViewManager: InputViewManager by lazy {
         DefaultInputViewManager(
             this,
-            InputViewManager.generateInputViewParams(pref),
+            InputViewManager.generateInputViewParams(pref, keyboardLayout),
         )
     }
 
