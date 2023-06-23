@@ -1,10 +1,10 @@
 package ee.oyatl.ime.f.ko.data
 
 import android.view.KeyEvent
-import ee.oyatl.ime.f.common.input.CodeConvertTable
-import ee.oyatl.ime.f.common.input.CustomKeycode
-import ee.oyatl.ime.f.common.input.SimpleCodeConvertTable
-import ee.oyatl.ime.f.common.input.SimpleCodeConvertTable.Entry
+import ee.oyatl.ime.f.core.table.CodeConvertTable
+import ee.oyatl.ime.f.core.input.CustomKeycode
+import ee.oyatl.ime.f.core.table.SimpleCodeConvertTable
+import ee.oyatl.ime.f.core.table.SimpleCodeConvertTable.Entry
 import ee.oyatl.ime.f.ko.hangul.JamoCombinationTable
 
 object HangulTables {

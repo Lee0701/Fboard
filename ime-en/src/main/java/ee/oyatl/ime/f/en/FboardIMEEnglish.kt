@@ -1,17 +1,11 @@
 package ee.oyatl.ime.f.en
 
-import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.view.KeyEvent
-import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.common.DefaultFboardIMEBase
-import ee.oyatl.ime.f.common.input.CharOverrideTable
-import ee.oyatl.ime.f.common.input.CodeConvertTable
-import ee.oyatl.ime.f.common.input.SimpleCodeConvertTable
-import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
-import ee.oyatl.ime.f.common.view.InputViewManager
-import ee.oyatl.ime.f.common.view.InputViewManager.Companion.generateInputViewParams
-import ee.oyatl.ime.f.common.view.keyboard.Themes
+import ee.oyatl.ime.f.core.table.CharOverrideTable
+import ee.oyatl.ime.f.core.table.CodeConvertTable
+import ee.oyatl.ime.f.core.table.SimpleCodeConvertTable
 
 class FboardIMEEnglish: DefaultFboardIMEBase() {
 

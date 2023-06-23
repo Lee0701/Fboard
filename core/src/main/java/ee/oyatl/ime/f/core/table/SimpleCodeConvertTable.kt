@@ -1,6 +1,6 @@
-package ee.oyatl.ime.f.common.input
+package ee.oyatl.ime.f.core.table
 
-import ee.oyatl.ime.f.common.ModifierState
+import ee.oyatl.ime.f.core.input.ModifierState
 
 class SimpleCodeConvertTable(
     val map: Map<Int, Entry> = mapOf(),
@@ -80,11 +80,11 @@ class SimpleCodeConvertTable(
     enum class EntryKey {
         Base, Shift, CapsLock, Alt, AltShift;
         companion object {
-            fun fromKeyboardState(keyboardState: ModifierState): EntryKey {
-                return if(keyboardState.altState.pressed && keyboardState.shiftState.pressed) AltShift
-                else if(keyboardState.altState.pressed) Alt
-                else if(keyboardState.shiftState.locked) CapsLock
-                else if(keyboardState.shiftState.pressed) Shift
+            fun fromModifierState(modifierStatetate: ModifierState): EntryKey {
+                return if(modifierStatetate.altState.pressed && modifierStatetate.shiftState.pressed) AltShift
+                else if(modifierStatetate.altState.pressed) Alt
+                else if(modifierStatetate.shiftState.locked) CapsLock
+                else if(modifierStatetate.shiftState.pressed) Shift
                 else Base
             }
         }

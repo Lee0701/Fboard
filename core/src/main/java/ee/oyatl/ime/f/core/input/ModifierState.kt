@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.common
+package ee.oyatl.ime.f.core.input
 
 import android.view.KeyEvent
 

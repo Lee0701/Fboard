@@ -1,6 +1,6 @@
-package ee.oyatl.ime.f.common.input
+package ee.oyatl.ime.f.core.table
 
-import ee.oyatl.ime.f.common.ModifierState
+import ee.oyatl.ime.f.core.input.ModifierState
 
 class CharOverrideTable(
     val map: Map<Int, Int> = mapOf(),

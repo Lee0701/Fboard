@@ -1,14 +1,9 @@
 package ee.oyatl.ime.f.ko
 
-import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
-import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.common.DefaultFboardIMEBase
-import ee.oyatl.ime.f.common.input.CharOverrideTable
-import ee.oyatl.ime.f.common.input.LayeredCodeConvertTable
-import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
-import ee.oyatl.ime.f.common.view.InputViewManager
-import ee.oyatl.ime.f.common.view.keyboard.Themes
+import ee.oyatl.ime.f.core.table.CharOverrideTable
+import ee.oyatl.ime.f.core.table.LayeredCodeConvertTable
 import ee.oyatl.ime.f.ko.data.HangulTables
 import ee.oyatl.ime.f.ko.hangul.HangulCombiner
 

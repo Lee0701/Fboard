@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.common.input
+package ee.oyatl.ime.f.core.input
 
 enum class CustomKeycode(val code: Int) {
 

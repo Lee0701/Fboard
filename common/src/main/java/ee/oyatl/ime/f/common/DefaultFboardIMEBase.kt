@@ -1,6 +1,5 @@
 package ee.oyatl.ime.f.common
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.drawable.Drawable
@@ -12,12 +11,13 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import ee.oyatl.ime.f.common.input.CharOverrideTable
-import ee.oyatl.ime.f.common.input.CodeConvertTable
+import ee.oyatl.ime.f.core.table.CharOverrideTable
+import ee.oyatl.ime.f.core.table.CodeConvertTable
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
+import ee.oyatl.ime.f.core.input.ModifierState
 
 abstract class DefaultFboardIMEBase
     : FboardIMEBase(), KeyboardListener, IMESwitcher, OnSharedPreferenceChangeListener {
