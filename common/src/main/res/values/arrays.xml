@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <string-array name="sync_settings_packages">
+        <item>ee.oyatl.ime.f.en</item>
+        <item>ee.oyatl.ime.f.ko</item>
+    </string-array>
+
+    <string-array name="sync_settings_keys">
+        <item>appearance_theme</item>
+        <item>appearance_keyboard_height</item>
+        <item>appearance_unify_height</item>
+        <item>appearance_haptic_feedback</item>
+        <item>appearance_sound_feedback</item>
+    </string-array>
+
     <string-array name="appearance_themes" tools:ignore="InconsistentArrays">
         <item>@string/theme_static</item>
     </string-array>

@@ -101,17 +101,8 @@ abstract class SettingsActivityBase: AppCompatActivity() {
     companion object {
         fun syncSettings(context: Context) {
             val pref = PreferenceManager.getDefaultSharedPreferences(context)
-            val packages: Set<String> = setOf(
-                "ee.oyatl.ime.f.en",
-                "ee.oyatl.ime.f.ko",
-            ) - context.packageName
-            val keys: Set<String> = setOf(
-                "appearance_theme",
-                "appearance_keyboard_height",
-                "appearance_unify_height",
-                "appearance_haptic_feedback",
-                "appearance_sound_feedback",
-            )
+            val packages = context.resources.getStringArray(R.array.sync_settings_packages).filterNotNull().toList()
+            val keys = context.resources.getStringArray(R.array.sync_settings_keys).toList()
             val json = JSONArray().apply {
                 keys.forEach { key ->
                     val value: Any = pref.all.entries.find { it.key == key }?.value ?: return@forEach
@@ -124,7 +115,7 @@ abstract class SettingsActivityBase: AppCompatActivity() {
                     put(entry)
                 }
             }
-            packages.forEach { pkg ->
+            (packages - context.packageName).forEach { pkg ->
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     `package` = pkg
