@@ -108,7 +108,6 @@ abstract class SettingsActivityBase: AppCompatActivity() {
             val keys: Set<String> = setOf(
                 "appearance_theme",
                 "appearance_keyboard_height",
-                "appearance_keyboard_height",
                 "appearance_unify_height",
                 "appearance_haptic_feedback",
                 "appearance_sound_feedback",
