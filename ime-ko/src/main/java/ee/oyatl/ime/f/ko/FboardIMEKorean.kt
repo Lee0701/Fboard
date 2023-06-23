@@ -1,6 +1,8 @@
 package ee.oyatl.ime.f.ko
 
+import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
+import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.common.DefaultFboardIMEBase
 import ee.oyatl.ime.f.common.input.CharOverrideTable
 import ee.oyatl.ime.f.common.input.LayeredCodeConvertTable
@@ -10,9 +12,10 @@ import ee.oyatl.ime.f.common.view.keyboard.Themes
 import ee.oyatl.ime.f.ko.data.HangulTables
 import ee.oyatl.ime.f.ko.hangul.HangulCombiner
 
-class FboardIMEKorean: DefaultFboardIMEBase(
-    params = generateInputViewParams(),
-) {
+class FboardIMEKorean: DefaultFboardIMEBase() {
+    val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
+    override val params: InputViewManager.Params get() = generateInputViewParams(pref)
+
     override val convertTable = HangulTables.LAYOUT_2SET_KS
     override val overrideTable: CharOverrideTable = CharOverrideTable()
     private val jamoCombinationTable = HangulTables.COMB_2SET_STANDARD
@@ -96,11 +99,17 @@ class FboardIMEKorean: DefaultFboardIMEBase(
     }
 
     companion object {
-        fun generateInputViewParams(): InputViewManager.Params = InputViewManager.Params(
-            keyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE,
-            keyboardTheme = Themes.Dynamic,
-            unifyHeight = false,
-            rowHeight = 54,
-        )
+        fun generateInputViewParams(pref: SharedPreferences): InputViewManager.Params {
+            val themeId = pref.getString("appearance_theme", "theme_dynamic")
+            val theme = Themes.of(themeId)
+            val unifyHeight = pref.getBoolean("appearance_unify_height", false)
+            val rowHeight = pref.getFloat("appearance_keyboard_height", 55f)
+            return InputViewManager.Params(
+                keyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE,
+                keyboardTheme = theme,
+                unifyHeight = unifyHeight,
+                rowHeight = rowHeight.toInt(),
+            )
+        }
     }
 }

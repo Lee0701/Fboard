@@ -1,7 +1,9 @@
 package ee.oyatl.ime.f.en
 
+import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.view.KeyEvent
+import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.common.DefaultFboardIMEBase
 import ee.oyatl.ime.f.common.input.CharOverrideTable
 import ee.oyatl.ime.f.common.input.CodeConvertTable
@@ -10,9 +12,10 @@ import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.Themes
 
-class FboardIMEEnglish: DefaultFboardIMEBase(
-    params = generateInputViewParams(),
-) {
+class FboardIMEEnglish: DefaultFboardIMEBase() {
+    val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
+    override val params: InputViewManager.Params get() = generateInputViewParams(pref)
+
     override val overrideTable: CharOverrideTable = CharOverrideTable()
     override val convertTable: CodeConvertTable = SimpleCodeConvertTable()
 
@@ -42,11 +45,17 @@ class FboardIMEEnglish: DefaultFboardIMEBase(
     }
 
     companion object {
-        fun generateInputViewParams(): InputViewManager.Params = InputViewManager.Params(
-            keyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE,
-            keyboardTheme = Themes.Dynamic,
-            unifyHeight = false,
-            rowHeight = 54,
-        )
+        fun generateInputViewParams(pref: SharedPreferences): InputViewManager.Params {
+            val themeId = pref.getString("appearance_theme", "theme_dynamic")
+            val theme = Themes.of(themeId)
+            val unifyHeight = pref.getBoolean("appearance_unify_height", false)
+            val rowHeight = pref.getFloat("appearance_keyboard_height", 55f)
+            return InputViewManager.Params(
+                keyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE,
+                keyboardTheme = theme,
+                unifyHeight = unifyHeight,
+                rowHeight = rowHeight.toInt(),
+            )
+        }
     }
 }

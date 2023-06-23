@@ -16,9 +16,7 @@ import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
 
-abstract class DefaultFboardIMEBase(
-    final override val params: InputViewManager.Params,
-): FboardIMEBase(), InputViewManager, KeyboardListener, IMESwitcher {
+abstract class DefaultFboardIMEBase: FboardIMEBase(), InputViewManager, KeyboardListener, IMESwitcher {
 
     abstract val convertTable: CodeConvertTable
     abstract val overrideTable: CharOverrideTable
@@ -31,8 +29,8 @@ abstract class DefaultFboardIMEBase(
     protected var shiftClickedTime: Long = 0
     protected var inputRecorded: Boolean = false
 
-    open val inputViewManager: InputViewManager =
-        DefaultInputViewManager(keyboardListener, params)
+    open val inputViewManager: InputViewManager by lazy {
+        DefaultInputViewManager(keyboardListener, params) }
 
     protected val imeSwitcher: IMESwitcher = when(Build.VERSION.SDK_INT) {
         in 0 until Build.VERSION_CODES.P -> LegacyIMESwitcher(this)

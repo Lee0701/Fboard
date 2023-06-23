@@ -56,8 +56,8 @@ object Themes {
         "theme_dynamic" to Dynamic,
     )
 
-    fun ofName(name: String?): Theme {
-        return (map[name] ?: Static).let {
+    fun of(id: String?): Theme {
+        return (map[id] ?: Static).let {
             if(!DynamicColors.isDynamicColorAvailable() && it == Dynamic) Static
             else it
         }

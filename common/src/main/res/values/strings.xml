@@ -10,4 +10,16 @@
     <string name="pref_method_choose_title">Choose Input Method</string>
     <string name="pref_method_choose_summary">Choose \'%s\' to start using.</string>
 
+    <string name="pref_header_appearance_title">Appearance</string>
+    <string name="pref_appearance_theme_title">Keyboard Theme</string>
+    <string name="theme_static">Static</string>
+    <string name="theme_dynamic">Dynamic</string>
+    <string name="pref_appearance_keyboard_height_title">Keyboard Height</string>
+    <string name="pref_appearance_unify_height_title">Unify Keyboard Heights</string>
+    <string name="pref_appearance_unify_height_summary">Keep entire keyboard height always the same.</string>
+    <string name="pref_appearance_default_height_title">Use Default Height</string>
+    <string name="pref_appearance_default_height_summary">Keep the keyboard height synced with base settings.</string>
+    <string name="pref_appearance_haptic_feedback_title">Haptic Feedback</string>
+    <string name="pref_appearance_sound_feedback_title">Sound Feedback</string>
+
 </resources>

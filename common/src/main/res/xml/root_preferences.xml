@@ -15,4 +15,42 @@
             app:summary="@string/pref_method_choose_summary" />
     </ee.oyatl.ime.f.common.settings.PreferenceCategory>
 
+    <ee.oyatl.ime.f.common.settings.PreferenceCategory
+        app:title="@string/pref_header_appearance_title">
+
+        <ee.oyatl.ime.f.common.settings.ListPreference
+            app:key="appearance_theme"
+            app:defaultValue="@string/pref_appearance_theme_default"
+            app:entries="@array/appearance_themes"
+            app:entryValues="@array/appearance_theme_values"
+            app:title="@string/pref_appearance_theme_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <ee.oyatl.ime.f.common.settings.SliderPreference
+            app:key="appearance_keyboard_height"
+            app:valueFrom="30.0"
+            app:valueTo="100.0"
+            app:stepSize="5.0"
+            app:defaultValue="@string/pref_appearance_keyboard_height_default"
+            app:title="@string/pref_appearance_keyboard_height_title"
+            app:useSimpleSummaryProvider="true"/>
+
+        <ee.oyatl.ime.f.common.settings.SwitchPreference
+            app:key="appearance_unify_height"
+            app:defaultValue="false"
+            app:title="@string/pref_appearance_unify_height_title"
+            app:summary="@string/pref_appearance_unify_height_summary" />
+
+        <ee.oyatl.ime.f.common.settings.SwitchPreference
+            app:key="appearance_haptic_feedback"
+            app:defaultValue="true"
+            app:title="@string/pref_appearance_haptic_feedback_title" />
+
+        <ee.oyatl.ime.f.common.settings.SwitchPreference
+            app:key="appearance_sound_feedback"
+            app:defaultValue="true"
+            app:title="@string/pref_appearance_sound_feedback_title" />
+
+    </ee.oyatl.ime.f.common.settings.PreferenceCategory>
+
 </PreferenceScreen>

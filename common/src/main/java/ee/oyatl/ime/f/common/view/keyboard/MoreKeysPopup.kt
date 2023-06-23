@@ -45,7 +45,7 @@ class MoreKeysPopup(
     override val width: Int = keyboardWidth.roundToInt()
     override val height: Int = keyboardHeight.roundToInt()
 
-    val theme = Themes.ofName(preferences.getString("appearance_theme", "theme_dynamic"))
+    val theme = Themes.of(preferences.getString("appearance_theme", "theme_dynamic"))
     private val keyboardViewType = preferences.getString("appearance_keyboard_view_type", "canvas") ?: "canvas"
     private val keyboardView: KeyboardView = StackedViewKeyboardView(
         context, null,
