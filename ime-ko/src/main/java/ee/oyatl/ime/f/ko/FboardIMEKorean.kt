@@ -1,6 +1,7 @@
 package ee.oyatl.ime.f.ko
 
 import android.graphics.drawable.Drawable
+import android.view.KeyEvent
 import ee.oyatl.ime.f.common.DefaultFboardIMEBase
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.LayeredCodeConvertTable
@@ -35,12 +36,16 @@ class FboardIMEKorean: DefaultFboardIMEBase() {
     override fun onUpdate() {
         val inputConnection = currentInputConnection ?: return
         val state = modifierState
-        val labels = convertTable
+        val labelsRange = KeyEvent.KEYCODE_UNKNOWN .. KeyEvent.KEYCODE_SEARCH
+        val defaultLabels = labelsRange.associateWith { code ->
+            keyCharacterMap.get(code, state.asMetaState()).toChar().toString()
+        }
+        val tableLabels = convertTable
             .getAllForState(state)
             .mapValues { (key, value) -> value.toChar().toString() }
         val icons = mapOf<Int, Drawable>()
         updateLabelsAndIcons(
-            labels = labels,
+            labels = defaultLabels + tableLabels,
             icons = icons,
         )
         inputConnection.setComposingText(hangulState.composed, 1)

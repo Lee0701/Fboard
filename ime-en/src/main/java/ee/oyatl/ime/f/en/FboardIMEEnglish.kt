@@ -14,7 +14,8 @@ class FboardIMEEnglish: DefaultFboardIMEBase() {
 
     override fun onUpdate() {
         val state = modifierState
-        val labels = (KeyEvent.KEYCODE_UNKNOWN .. KeyEvent.KEYCODE_SEARCH).associateWith { code ->
+        val labelsRange = KeyEvent.KEYCODE_UNKNOWN .. KeyEvent.KEYCODE_SEARCH
+        val labels = labelsRange.associateWith { code ->
             keyCharacterMap.get(code, state.asMetaState()).toChar().toString()
         }
         val icons = mapOf<Int, Drawable>()
