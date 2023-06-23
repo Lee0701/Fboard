@@ -5,38 +5,8 @@ import android.os.Build
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 
-abstract class FboardIMEBase: InputMethodService(), IMESwitcher {
-    @RequiresApi(Build.VERSION_CODES.P)
-    override fun previous(): Boolean {
-        return this.switchToPreviousInputMethod()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.P)
-    override fun next(onlyFboard: Boolean, onlyCurrentIme: Boolean): Boolean {
-        if(onlyFboard) {
-            val list = this.list().filter { !it.contains(".sym") }
-            val index = list.indexOf(current()) + 1
-            val id = list[index % list.size]
-            switchInputMethod(id)
-            return true
-        } else {
-            return switchToNextInputMethod(onlyCurrentIme)
-        }
-    }
-
-    override fun symbols(): Boolean {
-        val symbols = this.list().find { it.contains(".sym") }
-        if(symbols != null) switchInputMethod(symbols)
-        return true
-    }
-
-    override fun list(): List<String> {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        return imm.enabledInputMethodList
-            .filter { it.packageName.startsWith(FBOARD_PACKAGE_NAME_PREFIX) }
-            .map { it.id }
-    }
-
+abstract class FboardIMEBase: InputMethodService() {
+    
     companion object {
         const val FBOARD_PACKAGE_NAME_PREFIX = "ee.oyatl.ime.f"
     }

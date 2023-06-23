@@ -20,7 +20,7 @@ import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.CodeConvertTable
 
 abstract class DefaultFboardIMEBase
-    : FboardIMEBase(), KeyboardListener, IMESwitcher, OnSharedPreferenceChangeListener {
+    : FboardIMEBase(), KeyboardListener, OnSharedPreferenceChangeListener {
     private val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
 
     abstract val convertTable: CodeConvertTable
@@ -39,10 +39,9 @@ abstract class DefaultFboardIMEBase
     protected var shiftClickedTime: Long = 0
     protected var inputRecorded: Boolean = false
 
-
     protected val imeSwitcher: IMESwitcher = when(Build.VERSION.SDK_INT) {
         in 0 until Build.VERSION_CODES.P -> LegacyIMESwitcher(this)
-        else -> this
+        else -> NewIMESwitcher(this)
     }
 
     open fun onUpdate() = Unit
@@ -55,7 +54,7 @@ abstract class DefaultFboardIMEBase
         return imeSwitcher.next()
     }
     private fun onSymbolsKey(): Boolean {
-        if(current().contains(".sym")) return imeSwitcher.previous()
+        if(imeSwitcher.current().contains(".sym")) return imeSwitcher.previous()
         return imeSwitcher.symbols()
     }
 
@@ -190,10 +189,6 @@ abstract class DefaultFboardIMEBase
     }
 
     fun isPrintingKey(code: Int): Boolean = KeyEvent(KeyEvent.ACTION_DOWN, code).isPrintingKey
-
-    override fun current(): String {
-        return Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD)
-    }
 
     override fun onSharedPreferenceChanged(p: SharedPreferences?, k: String?) {
     }
