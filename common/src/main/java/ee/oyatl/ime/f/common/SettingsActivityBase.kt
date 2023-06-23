@@ -42,8 +42,8 @@ abstract class SettingsActivityBase: AppCompatActivity() {
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         syncSettings(this)
     }
 
