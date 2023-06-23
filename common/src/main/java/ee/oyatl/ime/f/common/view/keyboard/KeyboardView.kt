@@ -12,8 +12,7 @@ import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.FrameLayout
-import androidx.preference.PreferenceManager
-import ee.oyatl.ime.f.common.settings.SettingsActivity
+import ee.oyatl.ime.f.common.SettingsActivity
 import ee.oyatl.ime.f.common.view.model.Key
 import ee.oyatl.ime.f.common.view.model.KeyType
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout

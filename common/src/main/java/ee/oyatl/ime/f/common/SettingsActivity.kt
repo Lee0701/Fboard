@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.common.settings
+package ee.oyatl.ime.f.common
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,7 +11,6 @@ import androidx.core.view.WindowCompat
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.android.material.elevation.SurfaceColors
-import ee.oyatl.ime.f.common.R
 
 abstract class SettingsActivity: AppCompatActivity(), OnSharedPreferenceChangeListener {
 

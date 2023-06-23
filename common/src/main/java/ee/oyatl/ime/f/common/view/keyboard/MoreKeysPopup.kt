@@ -13,7 +13,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import ee.oyatl.ime.f.common.R
-import ee.oyatl.ime.f.common.settings.SettingsActivity
+import ee.oyatl.ime.f.common.SettingsActivity
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import kotlin.math.roundToInt
 
