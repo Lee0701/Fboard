@@ -54,6 +54,10 @@ abstract class DefaultFboardIMEBase
     private fun onLanguageKey(): Boolean {
         return imeSwitcher.next()
     }
+    private fun onSymbolsKey(): Boolean {
+        if(current().contains(".sym")) return imeSwitcher.previous()
+        return imeSwitcher.symbols()
+    }
 
     open fun onShiftKeyDown() {
         val lastState = modifierState
@@ -136,6 +140,7 @@ abstract class DefaultFboardIMEBase
             KeyEvent.KEYCODE_SPACE -> onSpace()
             KeyEvent.KEYCODE_ENTER -> onActionKey()
             KeyEvent.KEYCODE_LANGUAGE_SWITCH -> onLanguageKey()
+            KeyEvent.KEYCODE_SYM -> onSymbolsKey()
             KeyEvent.KEYCODE_SHIFT_LEFT, KeyEvent.KEYCODE_SHIFT_RIGHT -> true
             else -> false
         }

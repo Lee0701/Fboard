@@ -18,7 +18,7 @@ class LegacyIMESwitcher(service: InputMethodService): IMESwitcher {
 
     override fun next(onlyFboard: Boolean, onlyCurrentIme: Boolean): Boolean {
         if(onlyFboard) {
-            val list = this.list()
+            val list = this.list().filter { !it.contains(".sym") }
             val index = list.indexOf(current()) + 1
             val id = list[index % list.size]
             imm.setInputMethod(null, id)
@@ -26,6 +26,12 @@ class LegacyIMESwitcher(service: InputMethodService): IMESwitcher {
         } else {
             return imm.switchToNextInputMethod(null, onlyCurrentIme)
         }
+    }
+
+    override fun symbols(): Boolean {
+        val symbols = this.list().find { it.contains(".sym") }
+        if(symbols != null) imm.setInputMethod(null, symbols)
+        return true
     }
 
     override fun current(): String {

@@ -6,6 +6,8 @@ class SimpleCodeConvertTable(
     val map: Map<Int, Entry> = mapOf(),
 ): CodeConvertTable {
 
+    constructor(vararg entries: Pair<Int, Entry>): this(entries.toMap())
+
     private val reversedMap: Map<Pair<Int, EntryKey>, Int> = map.flatMap { (key, value) ->
         value.explode().map { (entryKey, charCode) -> (charCode to entryKey) to key }
     }.toMap()

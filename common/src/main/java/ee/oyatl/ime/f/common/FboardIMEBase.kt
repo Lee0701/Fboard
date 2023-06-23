@@ -14,7 +14,7 @@ abstract class FboardIMEBase: InputMethodService(), IMESwitcher {
     @RequiresApi(Build.VERSION_CODES.P)
     override fun next(onlyFboard: Boolean, onlyCurrentIme: Boolean): Boolean {
         if(onlyFboard) {
-            val list = this.list()
+            val list = this.list().filter { !it.contains(".sym") }
             val index = list.indexOf(current()) + 1
             val id = list[index % list.size]
             switchInputMethod(id)
@@ -22,6 +22,12 @@ abstract class FboardIMEBase: InputMethodService(), IMESwitcher {
         } else {
             return switchToNextInputMethod(onlyCurrentIme)
         }
+    }
+
+    override fun symbols(): Boolean {
+        val symbols = this.list().find { it.contains(".sym") }
+        if(symbols != null) switchInputMethod(symbols)
+        return true
     }
 
     override fun list(): List<String> {
