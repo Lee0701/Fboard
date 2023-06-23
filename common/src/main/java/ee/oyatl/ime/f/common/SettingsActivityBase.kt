@@ -45,8 +45,8 @@ abstract class SettingsActivityBase: AppCompatActivity() {
         super.onDestroy()
     }
 
-    fun maybeSyncSettings(): Boolean {
-        if(intent.action == Intent.ACTION_SEND && intent.type == "text/json") {
+    private fun maybeSyncSettings(): Boolean {
+        if(intent.action == Intent.ACTION_SEND && intent.type == "application/json") {
             val editor = pref.edit()
             val json = JSONObject(intent.getStringExtra("json") ?: "{}")
             json.keys().forEach { key ->
@@ -99,7 +99,7 @@ abstract class SettingsActivityBase: AppCompatActivity() {
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     `package` = pkg
-                    type = "text/json"
+                    type = "application/json"
                     putExtra("json", json.toString())
                 }
                 context.startActivity(intent)
