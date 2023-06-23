@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
     <queries>
         <package android:name="ee.oyatl.ime.f.en" />
         <package android:name="ee.oyatl.ime.f.ko" />
     </queries>
+
+    <permission
+        android:name="ee.oyatl.ime.f.permission.SYNC_SETTINGS"
+        android:label="@string/permission_sync_settings_label"
+        android:description="@string/permission_sync_settings_description"
+        android:protectionLevel="normal" />
+
+    <application>
+        <receiver
+            android:name=".SettingsBroadcastReceiver"
+            android:exported="true"
+            android:permission="ee.oyatl.ime.f.permission.SYNC_SETTINGS">
+
+            <intent-filter>
+                <action android:name="ee.oyatl.ime.f.intent.action.SYNC_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/json" />
+            </intent-filter>
+        </receiver>
+    </application>
+
 </manifest>

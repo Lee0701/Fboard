@@ -4,6 +4,9 @@
 
     <string name="title_activity_settings">Fboard Settings</string>
 
+    <string name="permission_sync_settings_label">Sync Settings</string>
+    <string name="permission_sync_settings_description">Sync common settings with other Fboard apps</string>
+
     <string name="pref_header_method_title">Input Method</string>
     <string name="pref_method_enable_title">Enable Input Method</string>
     <string name="pref_method_enable_summary">Select \'%s\' to enable.</string>
