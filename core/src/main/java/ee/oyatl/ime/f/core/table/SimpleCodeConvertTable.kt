@@ -18,8 +18,8 @@ class SimpleCodeConvertTable(
             .toMap()
     }
 
-    override fun getReversed(charCode: Int, entryKey: EntryKey): Int? {
-        return reversedMap[charCode to entryKey]
+    override fun getReversed(charCode: Int, state: ModifierState): Int? {
+        return reversedMap[charCode to EntryKey.fromModifierState(state)]
     }
 
     override operator fun get(keyCode: Int, state: ModifierState): Int? {

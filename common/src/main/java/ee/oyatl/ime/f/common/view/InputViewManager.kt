@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.view.View
-import ee.oyatl.ime.f.common.table.MoreKeysTable
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
 import ee.oyatl.ime.f.common.view.keyboard.Theme
 import ee.oyatl.ime.f.common.view.keyboard.Themes

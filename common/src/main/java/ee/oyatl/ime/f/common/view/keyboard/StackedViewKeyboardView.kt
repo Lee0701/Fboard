@@ -138,6 +138,7 @@ class StackedViewKeyboardView(
         override val key: Key,
         private val row: KeyboardRowBinding,
         val binding: KeyboardKeyBinding,
+        val output: CharSequence = key.output.orEmpty(),
     ): RowItemViewWrapper, KeyWrapper {
         override val x: Int get() = binding.root.x.roundToInt()
         override val y: Int get() = row.root.y.roundToInt()

@@ -1,7 +1,6 @@
 package ee.oyatl.ime.f.common.view.keyboard
 
 import KeyPreviewPopup
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
@@ -37,8 +36,6 @@ abstract class KeyboardView(
 
     open val keyboardWidth: Int = context.resources.displayMetrics.widthPixels
     open val keyboardHeight: Int = if(unifyHeight) rowHeight * 4 else rowHeight * keyboard.rows.size
-
-    protected val typedValue = TypedValue()
 
     protected val showKeyPopups: Boolean = preferences.getBoolean("behaviour_show_popups", true)
     protected val showMoreKeys: Boolean = preferences.getBoolean("behaviour_show_more_keys", true)

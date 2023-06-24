@@ -50,10 +50,7 @@ abstract class DefaultFboardIMEBase
 
     open fun onUpdate() {
         updateLabelsAndIcons()
-        val inputViewManager = inputViewManager
-        if(inputViewManager is DefaultInputViewManager) {
-            inputViewManager.keyboardView?.updateMoreKeyKeyboards(moreKeysTable.map)
-        }
+        updateMoreKeys()
     }
     open fun onReset() = Unit
     open fun onPrintingKey(keyCode: Int): Boolean = false
@@ -137,6 +134,16 @@ abstract class DefaultFboardIMEBase
         }
         val icons = mapOf<Int, Drawable>()
         inputViewManager.updateLabelsAndIcons(labels, getIcons() + icons)
+    }
+
+    protected open fun updateMoreKeys() {
+        val inputViewManager = inputViewManager
+        if(inputViewManager is DefaultInputViewManager) {
+            val convertedTable = moreKeysTable.map
+                .map { (key, value) -> (convertTable.getReversed(key, modifierState) ?: key) to value }
+                .toMap()
+            inputViewManager.keyboardView?.updateMoreKeyKeyboards(convertedTable)
+        }
     }
 
     private fun getIcons(): Map<Int, Drawable> {

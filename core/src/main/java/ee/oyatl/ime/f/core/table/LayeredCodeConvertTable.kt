@@ -22,12 +22,12 @@ class LayeredCodeConvertTable(
         return getAllForState(BASE_LAYER_NAME, state)
     }
 
-    override fun getReversed(charCode: Int, entryKey: SimpleCodeConvertTable.EntryKey): Int? {
-        return get(BASE_LAYER_NAME)?.getReversed(charCode, entryKey)
+    override fun getReversed(charCode: Int, state: ModifierState): Int? {
+        return get(BASE_LAYER_NAME)?.getReversed(charCode, state)
     }
 
-    fun getReversed(layerId: String, charCode: Int, entryKey: SimpleCodeConvertTable.EntryKey): Int? {
-        return get(layerId)?.getReversed(charCode, entryKey)
+    fun getReversed(layerId: String, charCode: Int, state: ModifierState): Int? {
+        return get(layerId)?.getReversed(charCode, state)
     }
 
     override operator fun get(keyCode: Int, state: ModifierState): Int? {
