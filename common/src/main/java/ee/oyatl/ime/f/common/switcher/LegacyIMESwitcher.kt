@@ -1,10 +1,11 @@
-package ee.oyatl.ime.f.common
+package ee.oyatl.ime.f.common.switcher
 
 import android.content.ContentResolver
 import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
+import ee.oyatl.ime.f.common.FboardIME
 
 @Suppress("DEPRECATION")
 class LegacyIMESwitcher(service: InputMethodService): IMESwitcher {

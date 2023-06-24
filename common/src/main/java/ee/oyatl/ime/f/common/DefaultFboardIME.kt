@@ -1,7 +1,6 @@
 package ee.oyatl.ime.f.common
 
 import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.KeyCharacterMap
@@ -10,21 +9,19 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import ee.oyatl.ime.f.common.switcher.IMESwitcher
+import ee.oyatl.ime.f.common.switcher.LegacyIMESwitcher
+import ee.oyatl.ime.f.common.switcher.NewIMESwitcher
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.input.ModifierState
-import ee.oyatl.ime.f.core.table.CharOverrideTable
-import ee.oyatl.ime.f.core.table.CodeConvertTable
 
-abstract class DefaultFboardIME
-    : FboardIME(), KeyboardListener, OnSharedPreferenceChangeListener {
-    private val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
+abstract class DefaultFboardIME : FboardIME(), KeyboardListener {
+    protected val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
 
-    abstract val convertTable: CodeConvertTable
-    abstract val overrideTable: CharOverrideTable
     abstract val keyboardLayout: KeyboardLayout
     protected val keyCharacterMap: KeyCharacterMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD)
     protected val inputViewManager: InputViewManager by lazy {
@@ -34,7 +31,7 @@ abstract class DefaultFboardIME
         )
     }
 
-    val doubleTapGap: Int = 500
+    private val doubleTapGap: Int = 500
 
     protected var modifierState: ModifierState = ModifierState()
     protected var shiftClickedTime: Long = 0
@@ -45,16 +42,10 @@ abstract class DefaultFboardIME
         else -> NewIMESwitcher(this)
     }
 
-    open fun onUpdate() = Unit
-    open fun onReset() = Unit
-    open fun onPrintingKey(keyCode: Int): Boolean = false
-    open fun onDeleteKey(): Boolean = false
-    open fun onSpace(): Boolean = false
-    open fun onActionKey(): Boolean = false
-    private fun onLanguageKey(): Boolean {
+    override fun onLanguageKey(): Boolean {
         return imeSwitcher.next()
     }
-    private fun onSymbolsKey(): Boolean {
+    override fun onSymbolsKey(): Boolean {
         if(imeSwitcher.current().contains(".sym")) return imeSwitcher.previous()
         return imeSwitcher.symbols()
     }
@@ -100,7 +91,6 @@ abstract class DefaultFboardIME
 
     override fun onCreate() {
         super.onCreate()
-        pref.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onCreateInputView(): View {
@@ -117,7 +107,6 @@ abstract class DefaultFboardIME
 
     override fun onDestroy() {
         super.onDestroy()
-        pref.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     fun updateLabelsAndIcons(labels: Map<Int, CharSequence>, icons: Map<Int, Drawable>) {
@@ -132,7 +121,7 @@ abstract class DefaultFboardIME
     }
 
     override fun onKeyClick(code: Int, output: String?) {
-        val isPrintingKey = isPrintingKey(code)
+        val isPrintingKey = codeIsPrintingKey(code)
         val consumed: Boolean = if(isPrintingKey) {
             onPrintingKey(code)
         } else when(code) {
@@ -189,8 +178,7 @@ abstract class DefaultFboardIME
         onUpdate()
     }
 
-    fun isPrintingKey(code: Int): Boolean = KeyEvent(KeyEvent.ACTION_DOWN, code).isPrintingKey
-
-    override fun onSharedPreferenceChanged(p: SharedPreferences?, k: String?) {
+    companion object {
+        fun codeIsPrintingKey(keyCode: Int): Boolean = KeyEvent(KeyEvent.ACTION_DOWN, keyCode).isPrintingKey
     }
 }

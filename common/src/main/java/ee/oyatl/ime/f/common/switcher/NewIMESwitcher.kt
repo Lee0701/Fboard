@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.common
+package ee.oyatl.ime.f.common.switcher
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.inputmethodservice.InputMethodService

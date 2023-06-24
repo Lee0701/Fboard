@@ -3,13 +3,14 @@ package ee.oyatl.ime.f.en
 import android.graphics.drawable.Drawable
 import android.view.KeyEvent
 import ee.oyatl.ime.f.common.DefaultFboardIME
+import ee.oyatl.ime.f.common.TableIME
 import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.CodeConvertTable
 import ee.oyatl.ime.f.core.table.SimpleCodeConvertTable
 
-class FboardIMEEnglish: DefaultFboardIME() {
+class FboardIMEEnglish: DefaultFboardIME(), TableIME {
 
     override val keyboardLayout: KeyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE
     override val overrideTable: CharOverrideTable = CharOverrideTable()

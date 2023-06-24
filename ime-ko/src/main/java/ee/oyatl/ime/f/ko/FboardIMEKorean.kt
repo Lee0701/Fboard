@@ -3,6 +3,7 @@ package ee.oyatl.ime.f.ko
 import android.graphics.drawable.Drawable
 import android.view.KeyEvent
 import ee.oyatl.ime.f.common.DefaultFboardIME
+import ee.oyatl.ime.f.common.TableIME
 import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.table.CharOverrideTable
@@ -10,7 +11,7 @@ import ee.oyatl.ime.f.core.table.LayeredCodeConvertTable
 import ee.oyatl.ime.f.ko.data.HangulTables
 import ee.oyatl.ime.f.ko.hangul.HangulCombiner
 
-class FboardIMEKorean: DefaultFboardIME() {
+class FboardIMEKorean: DefaultFboardIME(), TableIME {
 
     override val keyboardLayout: KeyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE
     override val convertTable = HangulTables.LAYOUT_2SET_KS
@@ -56,12 +57,11 @@ class FboardIMEKorean: DefaultFboardIME() {
 
     override fun onPrintingKey(keyCode: Int): Boolean {
         val inputConnection = currentInputConnection ?: return false
-        val state = modifierState
         val converted =
-            if(convertTable is LayeredCodeConvertTable) convertTable.get(layerIdByHangulState, keyCode, state)
-            else convertTable.get(keyCode, state)
+            if(convertTable is LayeredCodeConvertTable) convertTable.get(layerIdByHangulState, keyCode, modifierState)
+            else convertTable[keyCode, modifierState]
         if(converted == null) {
-            val char = keyCharacterMap.get(keyCode, state.asMetaState())
+            val char = keyCharacterMap.get(keyCode, modifierState.asMetaState())
             onReset()
             if(char > 0) inputConnection.commitText(char.toChar().toString(), 1)
         } else {
