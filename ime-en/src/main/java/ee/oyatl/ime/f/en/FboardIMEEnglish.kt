@@ -10,14 +10,17 @@ import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.SimpleCodeConvertTable
+import ee.oyatl.ime.f.en.data.LayoutPresets
 
 class FboardIMEEnglish: DefaultTableIME() {
 
     override fun onCreate() {
         super.onCreate()
+        val layoutName = pref.getString("keyboard_layout", null) ?: "qwerty"
+        val layout = LayoutPresets.PRESET_MOBILE[layoutName] ?: SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE
         inAppIMESwitcher.list += "base" to InAppIMESwitcher.State.Default(
             inputViewManager = DefaultInputViewManager(this,
-                InputViewManager.generateInputViewParams(pref, SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE)),
+                InputViewManager.generateInputViewParams(pref, layout)),
             moreKeysTable = MoreKeysTable(),
             convertTable = SimpleCodeConvertTable(),
             overrideTable = CharOverrideTable(),

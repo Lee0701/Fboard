@@ -38,7 +38,7 @@ abstract class SettingsActivity: AppCompatActivity(), OnSharedPreferenceChangeLi
             insetsController.isAppearanceLightStatusBars = true
             insetsController.isAppearanceLightNavigationBars = true
         }
-        PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
+        PreferenceManager.setDefaultValues(this, R.xml.preferences_common, false)
         pref.registerOnSharedPreferenceChangeListener(this)
     }
 
@@ -57,7 +57,8 @@ abstract class SettingsActivity: AppCompatActivity(), OnSharedPreferenceChangeLi
         @XmlRes val prefResId: Int,
     ): PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(prefResId, rootKey)
+            setPreferencesFromResource(R.xml.preferences_common, rootKey)
+            addPreferencesFromResource(prefResId)
         }
     }
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="preset_mobile_en_entries">
+        <item>@string/pref_keyboard_qwerty</item>
+        <item>@string/pref_keyboard_dvorak</item>
+    </string-array>
+
+    <string-array name="preset_mobile_en_values">
+        <item>qwerty</item>
+        <item>dvorak</item>
+    </string-array>
+
+</resources>

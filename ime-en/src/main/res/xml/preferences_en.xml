@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ee.oyatl.ime.f.common.settings.PreferenceCategory
+        app:title="@string/pref_header_keyboard_title">
+
+        <ee.oyatl.ime.f.common.settings.ListPreference
+            app:key="keyboard_layout"
+            app:title="@string/pref_keyboard_layout_title"
+            app:useSimpleSummaryProvider="true"
+            app:entries="@array/preset_mobile_en_entries"
+            app:entryValues="@array/preset_mobile_en_values"
+            app:defaultValue="qwerty" />
+
+    </ee.oyatl.ime.f.common.settings.PreferenceCategory>
+
+</PreferenceScreen>
