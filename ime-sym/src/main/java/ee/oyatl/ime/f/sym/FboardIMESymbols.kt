@@ -1,6 +1,5 @@
 package ee.oyatl.ime.f.sym
 
-import android.graphics.drawable.Drawable
 import ee.oyatl.ime.f.common.DefaultTableIME
 import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.table.MoreKeysTable
@@ -32,5 +31,8 @@ class FboardIMESymbols: DefaultTableIME() {
         onUpdate()
         return true
     }
+
+    // Never auto-unshift on symbols keyboard
+    override fun autoUnshift() = Unit
 
 }

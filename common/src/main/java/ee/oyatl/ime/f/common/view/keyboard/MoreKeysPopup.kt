@@ -111,8 +111,6 @@ class MoreKeysPopup(
         val pointY = y - keyHeight.roundToInt()
         val pointedKey = keyboardView.findKey(pointX, pointY)
         if(pointedKey != null && this.pointedKey != pointedKey) {
-            println("$pointX, $pointY, $pointedKey")
-            println("${pointedKey.y}, ${pointedKey.y}, ${pointedKey.width}, ${pointedKey.height}")
             keyboardView.highlight(pointedKey)
             this.pointedKey = pointedKey
         }

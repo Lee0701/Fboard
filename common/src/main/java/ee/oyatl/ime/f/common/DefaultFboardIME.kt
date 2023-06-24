@@ -121,10 +121,9 @@ abstract class DefaultFboardIME : FboardIME(), KeyboardListener {
     }
 
     protected open fun updateLabelsAndIcons() {
-        val state = modifierState
         val labelsToUpdate = KeyEvent.KEYCODE_UNKNOWN .. KeyEvent.KEYCODE_SEARCH
         val labels = labelsToUpdate.associateWith { code ->
-            keyCharacterMap.get(code, state.asMetaState()).toChar().toString()
+            keyCharacterMap.get(code, modifierState.asMetaState()).toChar().toString()
         }
         val icons = mapOf<Int, Drawable>()
         inputViewManager.updateLabelsAndIcons(labels, getIcons() + icons)
@@ -175,7 +174,7 @@ abstract class DefaultFboardIME : FboardIME(), KeyboardListener {
         if(isPrintingKey) {
             inputRecorded = true
         }
-        autoUnshift()
+        this.autoUnshift()
         this.onUpdate()
     }
 
@@ -197,14 +196,13 @@ abstract class DefaultFboardIME : FboardIME(), KeyboardListener {
     override fun onKeyFlick(direction: FlickDirection, code: Int, output: String?) {
     }
 
-    fun autoUnshift() {
+    protected open fun autoUnshift() {
         if(modifierState.shiftState.pressing && inputRecorded) return
         val lastState = modifierState
         val lastShiftState = lastState.shiftState
         if(!lastShiftState.locked && !lastShiftState.pressing) {
             modifierState = lastState.copy(shiftState = ModifierState.Item())
         }
-        onUpdate()
     }
 
     override fun onComputeInsets(outInsets: Insets?) {
