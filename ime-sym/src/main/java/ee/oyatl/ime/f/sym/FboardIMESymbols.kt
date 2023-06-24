@@ -2,20 +2,20 @@ package ee.oyatl.ime.f.sym
 
 import android.graphics.drawable.Drawable
 import ee.oyatl.ime.f.common.DefaultFboardIME
+import ee.oyatl.ime.f.common.DefaultTableIME
 import ee.oyatl.ime.f.common.TableIME
 import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.sym.data.SymbolTables
 
-class FboardIMESymbols: DefaultFboardIME(), TableIME {
+class FboardIMESymbols: DefaultTableIME() {
 
     override val keyboardLayout: KeyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE_SEMICOLON
     override val convertTable = SymbolTables.LAYOUT_SYMBOLS_G
     override val overrideTable: CharOverrideTable = CharOverrideTable()
 
     override fun onUpdate() {
-        val inputConnection = currentInputConnection ?: return
         val state = modifierState
         val labels = convertTable
             .getAllForState(state)

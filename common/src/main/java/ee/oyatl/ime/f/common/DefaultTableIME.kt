@@ -1,6 +1,22 @@
 package ee.oyatl.ime.f.common
 
+import android.graphics.drawable.Drawable
+import android.view.KeyEvent
+
 abstract class DefaultTableIME: DefaultFboardIME(), TableIME {
+
+    override fun onUpdate() {
+        val state = modifierState
+        val labelsRange = KeyEvent.KEYCODE_UNKNOWN .. KeyEvent.KEYCODE_SEARCH
+        val labels = labelsRange.associateWith { code ->
+            keyCharacterMap.get(code, state.asMetaState()).toChar().toString()
+        }
+        val icons = mapOf<Int, Drawable>()
+        updateLabelsAndIcons(
+            labels = labels,
+            icons = icons,
+        )
+    }
 
     override fun onPrintingKey(keyCode: Int): Boolean {
         val inputConnection = currentInputConnection ?: return false

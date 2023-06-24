@@ -42,6 +42,18 @@ abstract class DefaultFboardIME : FboardIME(), KeyboardListener {
         else -> NewIMESwitcher(this)
     }
 
+    override fun onUpdate() {
+        val labelsRange = KeyEvent.KEYCODE_UNKNOWN .. KeyEvent.KEYCODE_SEARCH
+        val labels = labelsRange.associateWith { code ->
+            keyCharacterMap.get(code, modifierState.asMetaState()).toChar().toString()
+        }
+        val icons = mapOf<Int, Drawable>()
+        updateLabelsAndIcons(
+            labels = labels,
+            icons = icons,
+        )
+    }
+
     override fun onLanguageKey(): Boolean {
         return imeSwitcher.next()
     }
