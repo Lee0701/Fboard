@@ -1,19 +1,37 @@
 package ee.oyatl.ime.f.en
 
 import ee.oyatl.ime.f.common.DefaultTableIME
+import ee.oyatl.ime.f.common.data.MoreKeysTables
 import ee.oyatl.ime.f.common.data.SoftKeyboardLayouts
+import ee.oyatl.ime.f.common.data.SymbolTables
+import ee.oyatl.ime.f.common.switcher.InAppIMESwitcher
 import ee.oyatl.ime.f.common.table.MoreKeysTable
-import ee.oyatl.ime.f.common.view.model.KeyboardLayout
+import ee.oyatl.ime.f.common.view.DefaultInputViewManager
+import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.core.table.CharOverrideTable
-import ee.oyatl.ime.f.core.table.CodeConvertTable
 import ee.oyatl.ime.f.core.table.SimpleCodeConvertTable
 
 class FboardIMEEnglish: DefaultTableIME() {
 
-    override val keyboardLayout: KeyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE
-    override val moreKeysTable: MoreKeysTable = MoreKeysTable()
-    override val overrideTable: CharOverrideTable = CharOverrideTable()
-    override val convertTable: CodeConvertTable = SimpleCodeConvertTable()
+    override fun onCreate() {
+        super.onCreate()
+        inAppIMESwitcher.list += "base" to InAppIMESwitcher.State.Default(
+            inputViewManager = DefaultInputViewManager(this,
+                InputViewManager.generateInputViewParams(pref, SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE)),
+            moreKeysTable = MoreKeysTable(),
+            convertTable = SimpleCodeConvertTable(),
+            overrideTable = CharOverrideTable(),
+        )
+        inAppIMESwitcher.list += "symbols" to InAppIMESwitcher.State.Default(
+            inputViewManager = DefaultInputViewManager(this,
+                InputViewManager.generateInputViewParams(
+                    pref, SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE_SEMICOLON)),
+            moreKeysTable = MoreKeysTables.MORE_KEYS_TABLE_G,
+            convertTable = SymbolTables.LAYOUT_SYMBOLS_G,
+            overrideTable = CharOverrideTable(),
+        )
+        inAppIMESwitcher.transition += listOf("base", "symbols")
+    }
 
     override fun updateLabelsAndIcons() {
         super.updateLabelsAndIcons()

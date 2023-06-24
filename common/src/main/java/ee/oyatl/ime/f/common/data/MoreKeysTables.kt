@@ -120,7 +120,7 @@ object MoreKeysTables {
         Row.ofOutputs("„“”«»"),
     )
 
-    val MORE_KEYS_G = MoreKeysTable(
+    val MORE_KEYS_TABLE_G = MoreKeysTable(
         0x31 to MORE_KEYS_1,
         0x32 to MORE_KEYS_2,
         0x33 to MORE_KEYS_3,

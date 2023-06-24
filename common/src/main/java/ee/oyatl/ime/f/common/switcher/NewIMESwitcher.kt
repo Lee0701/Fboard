@@ -12,6 +12,8 @@ class NewIMESwitcher(
     private val ime: InputMethodService,
 ): IMESwitcher {
 
+    private val imm = ime.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+
     @RequiresApi(Build.VERSION_CODES.P)
     override fun previous(): Boolean {
         return ime.switchToPreviousInputMethod()
@@ -30,14 +32,7 @@ class NewIMESwitcher(
         }
     }
 
-    override fun symbols(): Boolean {
-        val symbols = this.list().find { it.contains(".sym") }
-        if(symbols != null) ime.switchInputMethod(symbols)
-        return true
-    }
-
     override fun list(): List<String> {
-        val imm = ime.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         return imm.enabledInputMethodList
             .filter { it.packageName.startsWith(FBOARD_PACKAGE_NAME_PREFIX) }
             .map { it.id }

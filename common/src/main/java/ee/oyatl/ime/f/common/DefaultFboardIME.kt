@@ -2,6 +2,7 @@ package ee.oyatl.ime.f.common
 
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
+import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
@@ -11,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.common.table.MoreKeysTable
 import ee.oyatl.ime.f.common.switcher.IMESwitcher
+import ee.oyatl.ime.f.common.switcher.InAppIMESwitcher
 import ee.oyatl.ime.f.common.switcher.LegacyIMESwitcher
 import ee.oyatl.ime.f.common.switcher.NewIMESwitcher
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
@@ -22,21 +24,15 @@ import ee.oyatl.ime.f.core.input.ModifierState
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.CodeConvertTable
 
-abstract class DefaultFboardIME : FboardIME(), KeyboardListener {
+abstract class DefaultFboardIME: InputMethodService(), FboardIME, KeyboardListener {
     protected val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
 
-    abstract val keyboardLayout: KeyboardLayout
-    abstract val moreKeysTable: MoreKeysTable
-    abstract val convertTable: CodeConvertTable
-    abstract val overrideTable: CharOverrideTable
+    val inputViewManager: InputViewManager get() = inAppIMESwitcher.currentState.inputViewManager
+    val moreKeysTable: MoreKeysTable get() = inAppIMESwitcher.currentState.moreKeysTable
+    val convertTable: CodeConvertTable get() = inAppIMESwitcher.currentState.convertTable
+    val overrideTable: CharOverrideTable get() = inAppIMESwitcher.currentState.overrideTable
 
     protected val keyCharacterMap: KeyCharacterMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD)
-    protected val inputViewManager: InputViewManager by lazy {
-        DefaultInputViewManager(
-            this,
-            InputViewManager.generateInputViewParams(pref, keyboardLayout),
-        )
-    }
 
     private val doubleTapGap: Int = 500
 
@@ -44,9 +40,14 @@ abstract class DefaultFboardIME : FboardIME(), KeyboardListener {
     protected var shiftClickedTime: Long = 0
     protected var inputRecorded: Boolean = false
 
-    protected val imeSwitcher: IMESwitcher = when(Build.VERSION.SDK_INT) {
-        in 0 until Build.VERSION_CODES.P -> LegacyIMESwitcher(this)
-        else -> NewIMESwitcher(this)
+    protected val imeSwitcher: IMESwitcher by lazy {
+        when(Build.VERSION.SDK_INT) {
+            in 0 until Build.VERSION_CODES.P -> LegacyIMESwitcher(this)
+            else -> NewIMESwitcher(this)
+        }
+    }
+    protected val inAppIMESwitcher: InAppIMESwitcher by lazy {
+        InAppIMESwitcher()
     }
 
     override fun onUpdate() {
@@ -57,8 +58,9 @@ abstract class DefaultFboardIME : FboardIME(), KeyboardListener {
         return imeSwitcher.next()
     }
     override fun onSymbolsKey(): Boolean {
-        if(imeSwitcher.current().contains(".sym")) return imeSwitcher.previous()
-        return imeSwitcher.symbols()
+        val result = inAppIMESwitcher.next()
+        setInputView(inputViewManager.createView(this))
+        return result
     }
 
     open fun onShiftKeyDown() {
@@ -101,10 +103,10 @@ abstract class DefaultFboardIME : FboardIME(), KeyboardListener {
     }
 
     override fun onCreate() {
-        super.onCreate()
+        super<InputMethodService>.onCreate()
     }
 
-    override fun onCreateInputView(): View {
+    override fun onCreateInputView(): View? {
         val view = inputViewManager.createView(this)
         this.onUpdate()
         return view
@@ -117,7 +119,7 @@ abstract class DefaultFboardIME : FboardIME(), KeyboardListener {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        super<InputMethodService>.onDestroy()
     }
 
     protected open fun updateLabelsAndIcons() {

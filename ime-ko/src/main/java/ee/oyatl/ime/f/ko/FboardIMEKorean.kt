@@ -3,19 +3,19 @@ package ee.oyatl.ime.f.ko
 import ee.oyatl.ime.f.common.DefaultFboardIME
 import ee.oyatl.ime.f.common.TableIME
 import ee.oyatl.ime.f.common.data.SoftKeyboardLayouts
+import ee.oyatl.ime.f.common.switcher.InAppIMESwitcher
 import ee.oyatl.ime.f.common.table.MoreKeysTable
+import ee.oyatl.ime.f.common.view.DefaultInputViewManager
+import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.LayeredCodeConvertTable
+import ee.oyatl.ime.f.core.table.SimpleCodeConvertTable
 import ee.oyatl.ime.f.ko.data.HangulTables
 import ee.oyatl.ime.f.ko.hangul.HangulCombiner
 
 class FboardIMEKorean: DefaultFboardIME(), TableIME {
 
-    override val keyboardLayout: KeyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE
-    override val moreKeysTable: MoreKeysTable = MoreKeysTable()
-    override val convertTable = HangulTables.LAYOUT_2SET_KS
-    override val overrideTable: CharOverrideTable = CharOverrideTable()
     private val jamoCombinationTable = HangulTables.COMB_2SET_STANDARD
     private val hangulCombiner = HangulCombiner(jamoCombinationTable)
 
@@ -30,6 +30,18 @@ class FboardIMEKorean: DefaultFboardIME(), TableIME {
         else if(jung != null && jung and 0xff00000 == 0) "\$jung"
         else if(cho != null && cho and 0xff00000 == 0) "\$cho"
         else "base"
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        inAppIMESwitcher.list += "base" to InAppIMESwitcher.State.Default(
+            inputViewManager = DefaultInputViewManager(this,
+                InputViewManager.generateInputViewParams(pref, SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE)),
+            moreKeysTable = MoreKeysTable(),
+            convertTable = HangulTables.LAYOUT_2SET_KS,
+            overrideTable = CharOverrideTable(),
+        )
+        inAppIMESwitcher.transition += listOf("base")
     }
 
     override fun onReset() {
@@ -53,6 +65,7 @@ class FboardIMEKorean: DefaultFboardIME(), TableIME {
 
     override fun onPrintingKey(keyCode: Int): Boolean {
         val inputConnection = currentInputConnection ?: return false
+        val convertTable = this.convertTable
         val converted =
             if(convertTable is LayeredCodeConvertTable) convertTable.get(layerIdByHangulState, keyCode, modifierState)
             else convertTable[keyCode, modifierState]

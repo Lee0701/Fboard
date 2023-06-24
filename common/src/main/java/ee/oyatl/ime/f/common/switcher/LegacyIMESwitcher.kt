@@ -29,12 +29,6 @@ class LegacyIMESwitcher(service: InputMethodService): IMESwitcher {
         }
     }
 
-    override fun symbols(): Boolean {
-        val symbols = this.list().find { it.contains(".sym") }
-        if(symbols != null) imm.setInputMethod(null, symbols)
-        return true
-    }
-
     override fun current(): String {
         return Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD)
     }

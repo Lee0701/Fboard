@@ -1,16 +1,17 @@
 package ee.oyatl.ime.f.common
 
-import android.inputmethodservice.InputMethodService
+interface FboardIME {
 
-abstract class FboardIME: InputMethodService() {
-    open fun onUpdate() = Unit
-    open fun onReset() = Unit
-    open fun onPrintingKey(keyCode: Int): Boolean = false
-    open fun onDeleteKey(): Boolean = false
-    open fun onSpace(): Boolean = false
-    open fun onActionKey(): Boolean = false
-    open fun onLanguageKey(): Boolean = false
-    open fun onSymbolsKey(): Boolean = false
+    fun onCreate() = Unit
+    fun onDestroy() = Unit
+    fun onUpdate() = Unit
+    fun onReset() = Unit
+    fun onPrintingKey(keyCode: Int): Boolean = false
+    fun onDeleteKey(): Boolean = false
+    fun onSpace(): Boolean = false
+    fun onActionKey(): Boolean = false
+    fun onLanguageKey(): Boolean = false
+    fun onSymbolsKey(): Boolean = false
 
     companion object {
         const val FBOARD_PACKAGE_NAME_PREFIX = "ee.oyatl.ime.f"
