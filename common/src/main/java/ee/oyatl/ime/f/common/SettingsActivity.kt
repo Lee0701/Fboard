@@ -15,7 +15,7 @@ import com.google.android.material.elevation.SurfaceColors
 import org.json.JSONArray
 import org.json.JSONObject
 
-abstract class SettingsActivityBase: AppCompatActivity(), OnSharedPreferenceChangeListener {
+abstract class SettingsActivity: AppCompatActivity(), OnSharedPreferenceChangeListener {
     private val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
 
     abstract val prefResId: Int

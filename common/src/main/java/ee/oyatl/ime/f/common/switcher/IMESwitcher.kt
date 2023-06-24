@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.common
+package ee.oyatl.ime.f.common.switcher
 
 interface IMESwitcher {
     fun previous(): Boolean
