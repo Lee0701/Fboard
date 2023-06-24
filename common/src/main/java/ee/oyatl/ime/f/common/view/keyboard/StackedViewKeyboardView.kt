@@ -27,8 +27,13 @@ class StackedViewKeyboardView(
     popupOffsetY: Int,
     unifyHeight: Boolean,
     rowHeight: Int,
+    val width: Int? = null,
+    val height: Int? = null,
     disableTouch: Boolean = false,
-): KeyboardView(context, attrs, keyboard, theme, popupOffsetY, listener, unifyHeight, rowHeight, disableTouch) {
+): KeyboardView(context, attrs, listener, keyboard, theme, popupOffsetY, unifyHeight, rowHeight, disableTouch) {
+
+    override val keyboardWidth: Int = width ?: super.keyboardWidth
+    override val keyboardHeight: Int = height ?: super.keyboardHeight
 
     private val keyboardViewWrapper = initKeyboardView(keyboard, theme, listener)
     override val wrappedKeys: List<KeyWrapper> = keyboardViewWrapper.keys.toList()

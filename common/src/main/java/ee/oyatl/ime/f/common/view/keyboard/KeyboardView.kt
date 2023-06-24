@@ -25,10 +25,10 @@ import kotlin.math.roundToInt
 abstract class KeyboardView(
     context: Context,
     attrs: AttributeSet?,
+    protected val listener: KeyboardListener,
     protected val keyboard: KeyboardLayout,
     protected val theme: Theme,
     protected val popupOffsetY: Int,
-    protected val listener: KeyboardListener,
     unifyHeight: Boolean,
     rowHeight: Int,
     private val disableTouch: Boolean = false,
@@ -59,7 +59,6 @@ abstract class KeyboardView(
     protected abstract val wrappedKeys: List<RowItemWrapper>
     protected val moreKeysKeyboards: MutableMap<Int, KeyboardLayout> = mutableMapOf()
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if(disableTouch) return false
         if(event == null) return super.onTouchEvent(event)

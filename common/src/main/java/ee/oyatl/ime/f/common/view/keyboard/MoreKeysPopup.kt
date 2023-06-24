@@ -43,9 +43,8 @@ class MoreKeysPopup(
     override val height: Int = keyboardHeight.roundToInt()
 
     val theme = Themes.of(preferences.getString("appearance_theme", "theme_dynamic"))
-    private val keyboardViewType = preferences.getString("appearance_keyboard_view_type", "canvas") ?: "canvas"
     private val keyboardView: KeyboardView = StackedViewKeyboardView(
-        context, null, this, keyboard, theme, 0, false, keyHeight.roundToInt())
+        context, null, this, keyboard, theme, 0, false, keyHeight.roundToInt(), width, height)
     private var pointedKey: KeyboardView.KeyWrapper? = null
 
     private val animator: Animator = ValueAnimator.ofFloat(1f, 0f).apply {
@@ -86,7 +85,7 @@ class MoreKeysPopup(
         }
 
         val x = parentX - popupWindow.width/2f + offsetX
-        val y = parentY - popupWindow.height/2f*3f + offsetY
+        val y = parentY - popupWindow.height - keyHeight + offsetY
 
         popupWindow.showAtLocation(parent, Gravity.NO_GRAVITY, x.roundToInt(), y.roundToInt())
     }
@@ -112,6 +111,8 @@ class MoreKeysPopup(
         val pointY = y - keyHeight.roundToInt()
         val pointedKey = keyboardView.findKey(pointX, pointY)
         if(pointedKey != null && this.pointedKey != pointedKey) {
+            println("$pointX, $pointY, $pointedKey")
+            println("${pointedKey.y}, ${pointedKey.y}, ${pointedKey.width}, ${pointedKey.height}")
             keyboardView.highlight(pointedKey)
             this.pointedKey = pointedKey
         }

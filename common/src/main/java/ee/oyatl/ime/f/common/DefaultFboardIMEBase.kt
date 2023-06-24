@@ -208,6 +208,12 @@ abstract class DefaultFboardIMEBase
 
     fun isPrintingKey(code: Int): Boolean = KeyEvent(KeyEvent.ACTION_DOWN, code).isPrintingKey
 
+    override fun onComputeInsets(outInsets: Insets?) {
+        super.onComputeInsets(outInsets)
+        if(outInsets == null) return
+        outInsets.contentTopInsets = outInsets.visibleTopInsets
+    }
+
     override fun onSharedPreferenceChanged(p: SharedPreferences?, k: String?) {
     }
 }
