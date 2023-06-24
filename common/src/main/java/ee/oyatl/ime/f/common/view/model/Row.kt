@@ -10,4 +10,10 @@ data class Row(
             keys = this.keys + another.keys,
         )
     }
+
+    companion object {
+        fun ofOutputs(outputs: String): Row {
+            return Row(outputs.map { Key(output = it.toString()) })
+        }
+    }
 }

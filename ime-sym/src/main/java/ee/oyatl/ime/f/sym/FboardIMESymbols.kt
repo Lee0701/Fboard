@@ -1,29 +1,26 @@
 package ee.oyatl.ime.f.sym
 
-import android.graphics.drawable.Drawable
 import ee.oyatl.ime.f.common.DefaultFboardIMEBase
 import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
+import ee.oyatl.ime.f.common.table.MoreKeysTable
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.table.CharOverrideTable
+import ee.oyatl.ime.f.sym.data.MoreKeysTables
 import ee.oyatl.ime.f.sym.data.SymbolTables
 
 class FboardIMESymbols: DefaultFboardIMEBase() {
 
     override val keyboardLayout: KeyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE_SEMICOLON
+    override val moreKeysTable: MoreKeysTable = MoreKeysTables.MORE_KEYS_G
     override val convertTable = SymbolTables.LAYOUT_SYMBOLS_G
     override val overrideTable: CharOverrideTable = CharOverrideTable()
 
-    override fun onUpdate() {
-        val inputConnection = currentInputConnection ?: return
-        val state = modifierState
-        val labels = convertTable
-            .getAllForState(state)
-            .mapValues { (key, value) -> value.toChar().toString() }
-        val icons = mapOf<Int, Drawable>()
-        updateLabelsAndIcons(
-            labels = labels,
-            icons = icons,
-        )
+    override fun updateLabelsAndIcons() {
+        super.updateLabelsAndIcons()
+        val labels = convertTable.getAllForState(modifierState).map { (k, v) ->
+            k to v.toChar().toString()
+        }.toMap()
+        inputViewManager.updateLabelsAndIcons(labels, mapOf())
     }
 
     override fun onPrintingKey(keyCode: Int): Boolean {

@@ -4,14 +4,16 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.View
+import ee.oyatl.ime.f.common.table.MoreKeysTable
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
+import ee.oyatl.ime.f.common.view.keyboard.KeyboardView
 import ee.oyatl.ime.f.common.view.keyboard.StackedViewKeyboardView
 
 class DefaultInputViewManager(
     override val keyboardListener: KeyboardListener,
     override val params: InputViewManager.Params,
 ): InputViewManager {
-    var keyboardView: StackedViewKeyboardView? = null
+    var keyboardView: KeyboardView? = null
 
     override fun createView(context: Context): View {
         val rowHeight = TypedValue.applyDimension(

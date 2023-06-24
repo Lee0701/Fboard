@@ -4,13 +4,13 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.provider.Settings
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import ee.oyatl.ime.f.common.table.MoreKeysTable
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
@@ -24,9 +24,11 @@ abstract class DefaultFboardIMEBase
     : FboardIMEBase(), KeyboardListener, OnSharedPreferenceChangeListener {
     private val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
 
+    abstract val keyboardLayout: KeyboardLayout
+    abstract val moreKeysTable: MoreKeysTable
     abstract val convertTable: CodeConvertTable
     abstract val overrideTable: CharOverrideTable
-    abstract val keyboardLayout: KeyboardLayout
+
     protected val keyCharacterMap: KeyCharacterMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD)
     protected val inputViewManager: InputViewManager by lazy {
         DefaultInputViewManager(
@@ -46,7 +48,13 @@ abstract class DefaultFboardIMEBase
         else -> NewIMESwitcher(this)
     }
 
-    open fun onUpdate() = Unit
+    open fun onUpdate() {
+        updateLabelsAndIcons()
+        val inputViewManager = inputViewManager
+        if(inputViewManager is DefaultInputViewManager) {
+            inputViewManager.keyboardView?.updateMoreKeyKeyboards(moreKeysTable.map)
+        }
+    }
     open fun onReset() = Unit
     open fun onPrintingKey(keyCode: Int): Boolean = false
     open fun onDeleteKey(): Boolean = false
@@ -121,7 +129,13 @@ abstract class DefaultFboardIMEBase
         pref.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    fun updateLabelsAndIcons(labels: Map<Int, CharSequence>, icons: Map<Int, Drawable>) {
+    protected open fun updateLabelsAndIcons() {
+        val state = modifierState
+        val labelsToUpdate = KeyEvent.KEYCODE_UNKNOWN .. KeyEvent.KEYCODE_SEARCH
+        val labels = labelsToUpdate.associateWith { code ->
+            keyCharacterMap.get(code, state.asMetaState()).toChar().toString()
+        }
+        val icons = mapOf<Int, Drawable>()
         inputViewManager.updateLabelsAndIcons(labels, getIcons() + icons)
     }
 
@@ -146,8 +160,10 @@ abstract class DefaultFboardIMEBase
             else -> false
         }
         if(!consumed) {
-            if(isPrintingKey) {
-                val inputConnection = currentInputConnection ?: return
+            val inputConnection = currentInputConnection ?: return
+            if(code == 0 && output != null) {
+                inputConnection.commitText(output, 1)
+            } else if(isPrintingKey) {
                 this.onReset()
                 val char = keyCharacterMap.get(code, modifierState.asMetaState())
                 if(char > 0) inputConnection.commitText(char.toChar().toString(), 1)
