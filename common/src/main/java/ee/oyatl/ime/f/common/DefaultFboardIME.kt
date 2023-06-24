@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.provider.Settings
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
@@ -20,8 +19,8 @@ import ee.oyatl.ime.f.core.input.ModifierState
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.CodeConvertTable
 
-abstract class DefaultFboardIMEBase
-    : FboardIMEBase(), KeyboardListener, OnSharedPreferenceChangeListener {
+abstract class DefaultFboardIME
+    : FboardIME(), KeyboardListener, OnSharedPreferenceChangeListener {
     private val pref: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
 
     abstract val convertTable: CodeConvertTable

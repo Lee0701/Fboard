@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.common.R
-import ee.oyatl.ime.f.common.SettingsActivityBase
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import kotlin.math.roundToInt
 

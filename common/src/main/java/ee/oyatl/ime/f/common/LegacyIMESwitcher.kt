@@ -40,7 +40,7 @@ class LegacyIMESwitcher(service: InputMethodService): IMESwitcher {
 
     override fun list(): List<String> {
         return imm.enabledInputMethodList
-            .filter { it.packageName.startsWith(FboardIMEBase.FBOARD_PACKAGE_NAME_PREFIX) }
+            .filter { it.packageName.startsWith(FboardIME.FBOARD_PACKAGE_NAME_PREFIX) }
             .map { it.id }
     }
 }

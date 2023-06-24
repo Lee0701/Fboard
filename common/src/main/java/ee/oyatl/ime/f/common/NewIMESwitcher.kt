@@ -6,7 +6,7 @@ import android.os.Build
 import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
-import ee.oyatl.ime.f.common.FboardIMEBase.Companion.FBOARD_PACKAGE_NAME_PREFIX
+import ee.oyatl.ime.f.common.FboardIME.Companion.FBOARD_PACKAGE_NAME_PREFIX
 
 class NewIMESwitcher(
     private val ime: InputMethodService,

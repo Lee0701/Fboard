@@ -2,7 +2,7 @@ package ee.oyatl.ime.f.ko
 
 import android.graphics.drawable.Drawable
 import android.view.KeyEvent
-import ee.oyatl.ime.f.common.DefaultFboardIMEBase
+import ee.oyatl.ime.f.common.DefaultFboardIME
 import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.table.CharOverrideTable
@@ -10,7 +10,7 @@ import ee.oyatl.ime.f.core.table.LayeredCodeConvertTable
 import ee.oyatl.ime.f.ko.data.HangulTables
 import ee.oyatl.ime.f.ko.hangul.HangulCombiner
 
-class FboardIMEKorean: DefaultFboardIMEBase() {
+class FboardIMEKorean: DefaultFboardIME() {
 
     override val keyboardLayout: KeyboardLayout = SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE
     override val convertTable = HangulTables.LAYOUT_2SET_KS
