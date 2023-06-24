@@ -1,7 +1,7 @@
 package ee.oyatl.ime.f.en
 
 import ee.oyatl.ime.f.common.DefaultTableIME
-import ee.oyatl.ime.f.common.layouts.SoftKeyboardLayouts
+import ee.oyatl.ime.f.common.data.SoftKeyboardLayouts
 import ee.oyatl.ime.f.common.table.MoreKeysTable
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.table.CharOverrideTable

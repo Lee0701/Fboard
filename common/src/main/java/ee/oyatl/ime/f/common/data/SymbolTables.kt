@@ -1,4 +1,4 @@
-package ee.oyatl.ime.f.sym.data
+package ee.oyatl.ime.f.common.data
 
 import android.view.KeyEvent
 import ee.oyatl.ime.f.core.table.SimpleCodeConvertTable
