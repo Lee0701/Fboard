@@ -26,6 +26,7 @@ class DefaultInputViewManager(
             listener = keyboardListener,
             keyboard = params.keyboardLayout,
             theme = params.keyboardTheme,
+            popupOffsetY = 0,
             unifyHeight = params.unifyHeight,
             rowHeight = rowHeight,
         )

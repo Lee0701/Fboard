@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.preference.PreferenceManager
 import ee.oyatl.ime.f.common.R
-import ee.oyatl.ime.f.common.SettingsActivityBase
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import kotlin.math.roundToInt
 
@@ -25,10 +24,7 @@ class MoreKeysPopup(
     val listener: KeyboardListener,
 ): KeyboardPopup(context, key), KeyboardListener {
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-    private val wrappedContext = ContextThemeWrapper(
-        context,
-        R.style.Theme_Fboard_Keyboard_KeyPopup,
-    )
+    private val wrappedContext = ContextThemeWrapper(context, R.style.Theme_Fboard_Keyboard_KeyPopup)
 
     private val keyWidth: Float = wrappedContext.resources.getDimension(R.dimen.key_popup_morekeys_width)
     private val keyHeight: Float = wrappedContext.resources.getDimension(R.dimen.key_popup_morekeys_height)
@@ -49,13 +45,7 @@ class MoreKeysPopup(
     val theme = Themes.of(preferences.getString("appearance_theme", "theme_dynamic"))
     private val keyboardViewType = preferences.getString("appearance_keyboard_view_type", "canvas") ?: "canvas"
     private val keyboardView: KeyboardView = StackedViewKeyboardView(
-        context, null,
-        listener = this,
-        keyboard = keyboard,
-        theme = theme,
-        unifyHeight = false,
-        rowHeight = keyHeight.roundToInt()
-    )
+        context, null, this, keyboard, theme, 0, false, keyHeight.roundToInt())
     private var pointedKey: KeyboardView.KeyWrapper? = null
 
     private val animator: Animator = ValueAnimator.ofFloat(1f, 0f).apply {

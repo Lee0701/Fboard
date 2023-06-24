@@ -1,9 +1,9 @@
 package ee.oyatl.ime.f.common.view.keyboard
 
+import KeyPreviewPopup
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.util.AttributeSet
@@ -13,7 +13,6 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import androidx.preference.PreferenceManager
-import ee.oyatl.ime.f.common.SettingsActivityBase
 import ee.oyatl.ime.f.common.view.model.Key
 import ee.oyatl.ime.f.common.view.model.KeyType
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
@@ -28,20 +27,23 @@ abstract class KeyboardView(
     attrs: AttributeSet?,
     protected val keyboard: KeyboardLayout,
     protected val theme: Theme,
+    protected val popupOffsetY: Int,
     protected val listener: KeyboardListener,
     unifyHeight: Boolean,
     rowHeight: Int,
     private val disableTouch: Boolean = false,
 ): FrameLayout(context, attrs) {
-    private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    private val rect = Rect()
+    protected val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     open val keyboardWidth: Int = context.resources.displayMetrics.widthPixels
     open val keyboardHeight: Int = if(unifyHeight) rowHeight * 4 else rowHeight * keyboard.rows.size
 
+    protected val typedValue = TypedValue()
+
     protected val showKeyPopups: Boolean = preferences.getBoolean("behaviour_show_popups", true)
     protected val showMoreKeys: Boolean = preferences.getBoolean("behaviour_show_more_keys", true)
     protected val longPressDuration: Long = preferences.getFloat("behaviour_long_press_duration", 500f).toLong()
+    protected val longPressAction: String = preferences.getString("behaviour_long_press_action", null) ?: "shift"
     protected val repeatInterval: Long = preferences.getFloat("behaviour_repeat_interval", 50f).toLong()
 
     protected val slideAction = preferences.getString("behaviour_slide_action", "flick")
@@ -94,16 +96,16 @@ abstract class KeyboardView(
             handler?.postDelayed({ repeater() }, repeatInterval)
         }
         handler?.postDelayed({
-            if(key.key.repeatable) {
+            if(key.key.repeatable || longPressAction == "repeat") {
                 repeater()
             } else if(showMoreKeys) {
-                val moreKeysResult = showMoreKeysPopup(key, pointerId)
+                showMoreKeysPopup(key, pointerId)
                 // Call this once to initially point a key on popup
                 handler?.post { onTouchMove(key, pointerId, x, y) }
-                if(moreKeysResult) return@postDelayed
+            } else {
+                if(this.hapticFeedback) this.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                listener.onKeyLongClick(key.key.code, key.key.output)
             }
-            if(this.hapticFeedback) this.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            listener.onKeyLongClick(key.key.code, key.key.output)
         }, longPressDuration)
 
         listener.onKeyDown(key.key.code, key.key.output)
@@ -145,8 +147,7 @@ abstract class KeyboardView(
 
         if(slideAction == "flick"
             && direction != FlickDirection.None
-            && pointer.flickDirection == FlickDirection.None
-        ) {
+            && pointer.flickDirection == FlickDirection.None) {
             handler.removeCallbacksAndMessages(null)
             onFlick(direction, pointer.key, pointerId, x, y)
             pointers[pointerId] = pointer.copy(flickDirection = direction)
@@ -210,12 +211,6 @@ abstract class KeyboardView(
             if(x in key.x until key.x+key.width) {
                 if(y in key.y until key.y+key.height) {
                     if(key is KeyWrapper) return key
-                    else if(key is SpacerWrapper) {
-                        val left = findKey(key.x - 2, key.y + key.height/2)
-                        val right = findKey(key.x + key.width + 2, key.y + key.height/2)
-                        if(left != null) return left
-                        else if(right != null) return right
-                    }
                 }
             }
         }
@@ -250,8 +245,8 @@ abstract class KeyboardView(
         }
     }
 
-    private fun showMoreKeysPopup(key: KeyWrapper, pointerId: Int): Boolean {
-        val moreKeysKeyboard = moreKeysKeyboards[key.key.code] ?: return false
+    private fun showMoreKeysPopup(key: KeyWrapper, pointerId: Int) {
+        val moreKeysKeyboard = moreKeysKeyboards[key.key.code] ?: return
         val keyPopup = MoreKeysPopup(context, key, moreKeysKeyboard, listener)
         popups[pointerId]?.cancel()
         popups[pointerId] = keyPopup
@@ -261,18 +256,16 @@ abstract class KeyboardView(
         val offsetX = if(popupX < 0) -popupX else 0f
         val offsetY = 0f
         showPopup(key, keyPopup, offsetX.roundToInt(), offsetY.roundToInt())
-        return true
     }
 
     private fun showPopup(key: KeyWrapper, popup: KeyboardPopup, offsetX: Int, offsetY: Int) {
-        getGlobalVisibleRect(rect)
         val x = getPopupX(key) + offsetX
-        val y = getPopupY(key) + offsetY + rect.top
+        val y = getPopupY(key) + offsetY
         popup.show(this, x.roundToInt(), y.roundToInt())
     }
 
     private fun getPopupX(key: KeyWrapper): Float = key.x + key.width/2f
-    private fun getPopupY(key: KeyWrapper): Float = key.y + key.height/2f
+    private fun getPopupY(key: KeyWrapper): Float = key.y + popupOffsetY + key.height/2f
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)

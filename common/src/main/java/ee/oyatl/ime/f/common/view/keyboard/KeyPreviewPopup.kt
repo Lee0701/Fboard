@@ -1,5 +1,3 @@
-package ee.oyatl.ime.f.common.view.keyboard
-
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
@@ -14,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import ee.oyatl.ime.f.common.R
 import ee.oyatl.ime.f.common.databinding.KeyPopupPreviewBinding
+import ee.oyatl.ime.f.common.view.keyboard.KeyboardPopup
+import ee.oyatl.ime.f.common.view.keyboard.KeyboardView
 import kotlin.math.roundToInt
 
 class KeyPreviewPopup(
@@ -21,11 +21,8 @@ class KeyPreviewPopup(
     key: KeyboardView.KeyWrapper,
 ): KeyboardPopup(context, key) {
 
-    private val wrappedContext = ContextThemeWrapper(
-        context,
-        R.style.Theme_Fboard_Keyboard_KeyPopup,
-    )
-    private val binding = KeyPopupPreviewBinding.inflate(LayoutInflater.from(wrappedContext))
+    private val wrappedContext = ContextThemeWrapper(context, R.style.Theme_Fboard_Keyboard_KeyPopup)
+    private val binding = KeyPopupPreviewBinding.inflate(LayoutInflater.from(wrappedContext), null, false)
 
     override val offsetX: Int = 0
     override val offsetY: Int = 0
