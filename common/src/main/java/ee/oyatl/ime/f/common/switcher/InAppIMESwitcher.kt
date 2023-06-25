@@ -9,7 +9,8 @@ class InAppIMESwitcher: IMESwitcher {
 
     val list: MutableMap<String, State> = mutableMapOf()
     val transition: MutableList<String> = mutableListOf()
-    val currentState: State get() = list[transition[currentStateIndex]]!!
+    val currentStateName: String get() = transition[currentStateIndex]
+    val currentState: State get() = list[currentStateName]!!
 
     private var currentStateIndex: Int = 0
 

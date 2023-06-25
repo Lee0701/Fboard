@@ -200,6 +200,7 @@ abstract class DefaultFboardIME: InputMethodService(), FboardIME, KeyboardListen
 
     protected open fun autoUnshift() {
         if(modifierState.shiftState.pressing && inputRecorded) return
+        if(inAppIMESwitcher.currentStateName == "symbols") return
         val lastState = modifierState
         val lastShiftState = lastState.shiftState
         if(!lastShiftState.locked && !lastShiftState.pressing) {
