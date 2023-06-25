@@ -1,0 +1,73 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          submodules: true
+
+      - name: set up JDK 17
+        uses: actions/setup-java@v3.6.0
+        with:
+          distribution: 'adopt' # See 'Supported distributions' for available options
+          java-version: '17'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Get version code from build.gradle
+        run: echo "VERSION_CODE=$(${{ github.workspace }}/gradlew -q printVersionCode)" >> $GITHUB_ENV
+
+      - name: Get version name from build.gradle
+        run: echo "BASE_VERSION_NAME=$(${{ github.workspace }}/gradlew -q printVersionName)" >> $GITHUB_ENV
+
+      - name: Increment version code
+        run: echo "VERSION_CODE=$(expr ${{ env.VERSION_CODE }} + 1)" >> $GITHUB_ENV
+
+      - name: Add commit SHA to version name
+        run: echo "VERSION_NAME=${{ env.BASE_VERSION_NAME }}-${{ env.VERSION_CODE }}-$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
+
+      - name: Override version name and code
+        uses: Fboard/android-version-actions@master
+        with:
+          gradlePath: build.gradle
+          versionCode: ${{ env.VERSION_CODE }}
+          versionName: ${{ env.VERSION_NAME }}
+
+      - name: Build with Gradle
+        run: ./gradlew buildRelease
+
+      - name: Build Release AAB
+        id: buildBundle
+        run: ./gradlew bundleRelease
+
+      - name: Sign AAB
+        id: sign
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Restore base version name
+        uses: Fboard/android-version-actions@master
+        with:
+          gradlePath: build.gradle
+          versionCode: ${{ env.VERSION_CODE }}
+          versionName: ${{ env.BASE_VERSION_NAME }}
+
+      - name: Push new version information
+        uses: ko-Kore/publish@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TASK_NAME: 'Bump version'
+          TIMEZONE: 'Asia/Seoul'
+          BRANCH_NAME: 'main'
