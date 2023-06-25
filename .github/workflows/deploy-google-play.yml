@@ -37,8 +37,8 @@ jobs:
       - name: Increment version code
         run: echo "VERSION_CODE=$(expr ${{ env.VERSION_CODE }} + 1)" >> $GITHUB_ENV
 
-      - name: Add commit SHA to version name
-        run: echo "VERSION_NAME=${{ env.BASE_VERSION_NAME }}-${{ env.VERSION_CODE }}-$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
+      - name: Add date and commit SHA to version name
+        run: echo "VERSION_NAME=$(date +%Y%m%d)-${{ env.VERSION_CODE }}-$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
 
       - name: Override version name and code
         uses: Fboard/android-version-actions@master
