@@ -11,8 +11,8 @@ android {
         applicationId "ee.oyatl.ime.f.en"
         minSdk 16
         targetSdk 34
-        versionCode version_code
-        versionName version_name
+        versionCode 1
+        versionName "0.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders['package'] = applicationId
@@ -47,4 +47,12 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+tasks.register('printVersionCode') {
+    println version_code
+}
+
+tasks.register('printVersionName') {
+    println version_name
 }
