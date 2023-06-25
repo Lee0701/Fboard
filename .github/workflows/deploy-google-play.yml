@@ -46,11 +46,11 @@ jobs:
           versionName: ${{ env.VERSION_NAME }}
 
       - name: Build with Gradle
-        run: ./gradlew buildRelease
+        run: ./gradlew :ime-${{ matrix.locale }}:buildRelease
 
       - name: Build Release AAB
         id: buildBundle
-        run: ./gradlew bundleRelease
+        run: ./gradlew :ime-${{ matrix.locale }}:bundleRelease
 
       - name: Sign AAB
         id: sign
