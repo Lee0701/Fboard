@@ -31,9 +31,6 @@ jobs:
       - name: Get version code from build.gradle
         run: echo "VERSION_CODE=$(${{ github.workspace }}/gradlew -q :ime-${{ matrix.locale }}:printVersionCode)" >> $GITHUB_ENV
 
-      - name: Get version name from build.gradle
-        run: echo "BASE_VERSION_NAME=$(${{ github.workspace }}/gradlew -q :ime-${{ matrix.locale }}:printVersionName)" >> $GITHUB_ENV
-
       - name: Increment version code
         run: echo "VERSION_CODE=$(expr ${{ env.VERSION_CODE }} + 1)" >> $GITHUB_ENV
 
@@ -91,13 +88,6 @@ jobs:
           releaseFiles: ime-${{ matrix.locale }}/build/outputs/bundle/release/ime-${{ matrix.locale }}-release.aab
           track: internal
           status: draft
-
-      - name: Restore base version name
-        uses: Fboard/android-version-actions@master
-        with:
-          gradlePath: ime-${{ matrix.locale }}/build.gradle
-          versionCode: ${{ env.VERSION_CODE }}
-          versionName: ${{ env.BASE_VERSION_NAME }}
 
       - name: Push new version information
         uses: Fboard/publish@master
