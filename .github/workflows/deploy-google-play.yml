@@ -82,4 +82,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TASK_NAME: 'Bump version'
           TIMEZONE: 'Asia/Seoul'
-          BRANCH_NAME: 'main'
+          BRANCH_NAME: 'trunk'
