@@ -12,7 +12,7 @@ import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.CodeConvertTable
 import ee.oyatl.ime.f.core.table.LayeredCodeConvertTable
-import ee.oyatl.ime.f.ko.data.HangulTables
+import ee.oyatl.ime.f.ko.data.LayoutPresets
 import ee.oyatl.ime.f.ko.hangul.HangulCombiner
 
 class FboardIMEKorean: DefaultFboardIME(), TableIME {
@@ -35,13 +35,17 @@ class FboardIMEKorean: DefaultFboardIME(), TableIME {
 
     override fun onCreate() {
         super.onCreate()
+        val presetName = pref.getString("keyboard_preset", null) ?: "2set_ks"
+        val preset = LayoutPresets.IME_PRESET[presetName] ?: LayoutPresets.PRESET_2SET_KS
+        val softLayout = LayoutPresets.SOFT_LAYOUT_PRESET_MOBILE[preset.softKeyboardPreset]
+            ?: SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE
         inAppIMESwitcher.list += "base" to IMESwitcherState(
             inputViewManager = DefaultInputViewManager(this,
-                InputViewManager.generateInputViewParams(pref, SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE)),
+                InputViewManager.generateInputViewParams(pref, softLayout)),
             moreKeysTable = MoreKeysTable(),
-            convertTable = HangulTables.LAYOUT_2SET_KS,
+            convertTable = preset.convertTable,
             overrideTable = CharOverrideTable(),
-            hangulCombiner = HangulCombiner(HangulTables.COMB_2SET_STANDARD),
+            hangulCombiner = HangulCombiner(preset.combinationTable),
         )
         inAppIMESwitcher.list += "symbols" to IMESwitcherState(
             inputViewManager = DefaultInputViewManager(this,

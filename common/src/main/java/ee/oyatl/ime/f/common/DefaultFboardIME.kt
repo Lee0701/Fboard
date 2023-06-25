@@ -20,6 +20,7 @@ import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
 import ee.oyatl.ime.f.common.view.model.KeyboardLayout
+import ee.oyatl.ime.f.core.input.CustomKeycode
 import ee.oyatl.ime.f.core.input.ModifierState
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.CodeConvertTable
@@ -214,6 +215,9 @@ abstract class DefaultFboardIME: InputMethodService(), FboardIME, KeyboardListen
     }
 
     companion object {
-        fun codeIsPrintingKey(keyCode: Int): Boolean = KeyEvent(KeyEvent.ACTION_DOWN, keyCode).isPrintingKey
+        fun codeIsPrintingKey(keyCode: Int): Boolean {
+            if(keyCode in CustomKeycode.codes) return true
+            return KeyEvent(KeyEvent.ACTION_DOWN, keyCode).isPrintingKey
+        }
     }
 }

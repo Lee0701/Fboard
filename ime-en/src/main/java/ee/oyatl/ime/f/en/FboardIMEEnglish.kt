@@ -17,7 +17,7 @@ class FboardIMEEnglish: DefaultTableIME() {
     override fun onCreate() {
         super.onCreate()
         val layoutName = pref.getString("keyboard_layout", null) ?: "qwerty"
-        val layout = LayoutPresets.PRESET_MOBILE[layoutName] ?: SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE
+        val layout = LayoutPresets.SOFT_LAYOUT_PRESET_MOBILE[layoutName] ?: SoftKeyboardLayouts.LAYOUT_QWERTY_MOBILE
         inAppIMESwitcher.list += "base" to InAppIMESwitcher.State.Default(
             inputViewManager = DefaultInputViewManager(this,
                 InputViewManager.generateInputViewParams(pref, layout)),
