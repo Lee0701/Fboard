@@ -56,3 +56,7 @@ tasks.register('printVersionCode') {
 tasks.register('printVersionName') {
     println android.defaultConfig.versionName
 }
+
+tasks.register('printPackageName') {
+    println android.defaultConfig.applicationId
+}
