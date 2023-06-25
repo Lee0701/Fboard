@@ -50,9 +50,9 @@ dependencies {
 }
 
 tasks.register('printVersionCode') {
-    println version_code
+    println android.defaultConfig.versionCode
 }
 
 tasks.register('printVersionName') {
-    println version_name
+    println android.defaultConfig.versionName
 }
