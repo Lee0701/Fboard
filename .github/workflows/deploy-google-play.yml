@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         locale: [en, ko]
 
@@ -90,7 +90,7 @@ jobs:
           packageName: ${{ env.PACKAGE_NAME }}
           releaseFiles: ime-${{ matrix.locale }}/build/outputs/bundle/release/ime-${{ matrix.locale }}-release.aab
           track: internal
-          status: completed
+          status: draft
 
       - name: Restore base version name
         uses: Fboard/android-version-actions@master
