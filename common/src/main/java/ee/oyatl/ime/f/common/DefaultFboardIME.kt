@@ -198,6 +198,43 @@ abstract class DefaultFboardIME: InputMethodService(), FboardIME, KeyboardListen
     override fun onKeyFlick(direction: FlickDirection, code: Int, output: String?) {
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        when(keyCode) {
+            KeyEvent.KEYCODE_SHIFT_LEFT, KeyEvent.KEYCODE_SHIFT_RIGHT -> {
+                modifierState = modifierState.copy(shiftState = ModifierState.Item(
+                    pressed = true,
+                    pressing = true,
+                ))
+                onUpdate()
+            }
+            KeyEvent.KEYCODE_CAPS_LOCK -> {
+                val newState = !modifierState.shiftState.locked
+                modifierState = modifierState.copy(shiftState = ModifierState.Item(
+                    pressed = newState,
+                    locked = newState,
+                ))
+                onUpdate()
+            }
+            else -> {
+                this.onKeyClick(keyCode, event?.unicodeChar?.toChar()?.toString())
+            }
+        }
+        return true
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        when(keyCode) {
+            KeyEvent.KEYCODE_SHIFT_LEFT, KeyEvent.KEYCODE_SHIFT_RIGHT -> {
+                modifierState = modifierState.copy(shiftState = ModifierState.Item(
+                    pressed = false,
+                    pressing = false,
+                ))
+                onUpdate()
+            }
+        }
+        return true
+    }
+
     protected open fun autoUnshift() {
         if(modifierState.shiftState.pressing && inputRecorded) return
         val lastState = modifierState
