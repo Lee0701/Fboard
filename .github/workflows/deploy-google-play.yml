@@ -4,6 +4,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: true
+      matrix:
+        locale: [en, ko]
 
     steps:
       - name: Checkout
@@ -22,10 +27,10 @@ jobs:
         run: chmod +x gradlew
 
       - name: Get version code from build.gradle
-        run: echo "VERSION_CODE=$(${{ github.workspace }}/gradlew -q printVersionCode)" >> $GITHUB_ENV
+        run: echo "VERSION_CODE=$(${{ github.workspace }}/gradlew -q :ime-${{ matrix.locale }}:printVersionCode)" >> $GITHUB_ENV
 
       - name: Get version name from build.gradle
-        run: echo "BASE_VERSION_NAME=$(${{ github.workspace }}/gradlew -q printVersionName)" >> $GITHUB_ENV
+        run: echo "BASE_VERSION_NAME=$(${{ github.workspace }}/gradlew -q :ime-${{ matrix.locale }}:printVersionName)" >> $GITHUB_ENV
 
       - name: Increment version code
         run: echo "VERSION_CODE=$(expr ${{ env.VERSION_CODE }} + 1)" >> $GITHUB_ENV
@@ -36,31 +41,38 @@ jobs:
       - name: Override version name and code
         uses: Fboard/android-version-actions@master
         with:
-          gradlePath: build.gradle
+          gradlePath: ime-${{ matrix.locale }}/build.gradle
           versionCode: ${{ env.VERSION_CODE }}
           versionName: ${{ env.VERSION_NAME }}
 
       - name: Build with Gradle
-        run: ./gradlew buildRelease
+        run: ./gradlew :ime-${{ matrix.locale }}:buildRelease
 
       - name: Build Release AAB
         id: buildBundle
-        run: ./gradlew bundleRelease
+        run: ./gradlew :ime-${{ matrix.locale }}:bundleRelease
 
       - name: Sign AAB
         id: sign
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/bundle/release
+          releaseDirectory: ime-${{ matrix.locale }}/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
+      - name: Upload AAB
+        id: uploadArtifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ime-${{ matrix.locale }}
+          path: ime-${{ matrix.locale }}/build/outputs/bundle/release/ime-${{ matrix.locale }}-release.aab
+
       - name: Restore base version name
         uses: Fboard/android-version-actions@master
         with:
-          gradlePath: build.gradle
+          gradlePath: ime-${{ matrix.locale }}/build.gradle
           versionCode: ${{ env.VERSION_CODE }}
           versionName: ${{ env.BASE_VERSION_NAME }}
 
@@ -70,4 +82,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TASK_NAME: 'Bump version'
           TIMEZONE: 'Asia/Seoul'
-          BRANCH_NAME: 'main'
+          BRANCH_NAME: 'trunk'
