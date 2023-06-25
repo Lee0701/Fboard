@@ -83,3 +83,6 @@ jobs:
           TASK_NAME: 'Bump version'
           TIMEZONE: 'Asia/Seoul'
           BRANCH_NAME: 'trunk'
+
+      - name: Add tag
+        run: git tag $VERSION_NAME
