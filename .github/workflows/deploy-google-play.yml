@@ -27,7 +27,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Get version code from build.gradle
-        run: echo "VERSION_CODE=$(${{ github.workspace }}/gradlew -q ime-${{ matrix.locale }}:printVersionCode)" >> $GITHUB_ENV
+        run: echo "VERSION_CODE=$(${{ github.workspace }}/gradlew -q :ime-${{ matrix.locale }}:printVersionCode)" >> $GITHUB_ENV
 
       - name: Get version name from build.gradle
         run: echo "BASE_VERSION_NAME=$(${{ github.workspace }}/gradlew -q :ime-${{ matrix.locale }}:printVersionName)" >> $GITHUB_ENV
