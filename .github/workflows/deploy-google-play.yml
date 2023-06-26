@@ -25,6 +25,9 @@ jobs:
           distribution: 'adopt' # See 'Supported distributions' for available options
           java-version: '17'
 
+      - name: Set Timezone
+        run: ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
