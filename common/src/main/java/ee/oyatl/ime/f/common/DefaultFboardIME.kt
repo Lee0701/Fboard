@@ -19,7 +19,6 @@ import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
-import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.input.ModifierState
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.CodeConvertTable
@@ -134,10 +133,11 @@ abstract class DefaultFboardIME: InputMethodService(), FboardIME, KeyboardListen
     protected open fun updateMoreKeys() {
         val inputViewManager = inputViewManager
         if(inputViewManager is DefaultInputViewManager) {
-            val convertedTable = moreKeysTable.map
-                .map { (key, value) -> (convertTable.getReversed(key, modifierState) ?: key) to value }
-                .toMap()
-            inputViewManager.keyboardView?.updateMoreKeyKeyboards(convertedTable)
+            val moreKeysTable = this.moreKeysTable.map.map { (char, value) ->
+                val keyCode: Int? = convertTable.getReversed(char, modifierState)
+                if(keyCode != null) keyCode to value else null
+            }.filterNotNull().toMap()
+            inputViewManager.keyboardView?.updateMoreKeyKeyboards(moreKeysTable)
         }
     }
 
