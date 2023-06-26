@@ -10,15 +10,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import ee.oyatl.ime.f.common.table.MoreKeysTable
 import ee.oyatl.ime.f.common.switcher.IMESwitcher
 import ee.oyatl.ime.f.common.switcher.InAppIMESwitcher
 import ee.oyatl.ime.f.common.switcher.LegacyIMESwitcher
 import ee.oyatl.ime.f.common.switcher.NewIMESwitcher
+import ee.oyatl.ime.f.common.table.MoreKeysTable
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
+import ee.oyatl.ime.f.core.input.CustomKeycode
 import ee.oyatl.ime.f.core.input.ModifierState
 import ee.oyatl.ime.f.core.table.CharOverrideTable
 import ee.oyatl.ime.f.core.table.CodeConvertTable
@@ -252,6 +253,9 @@ abstract class DefaultFboardIME: InputMethodService(), FboardIME, KeyboardListen
     }
 
     companion object {
-        fun codeIsPrintingKey(keyCode: Int): Boolean = KeyEvent(KeyEvent.ACTION_DOWN, keyCode).isPrintingKey
+        fun codeIsPrintingKey(keyCode: Int): Boolean {
+            if(keyCode in CustomKeycode.codes) return true
+            return KeyEvent(KeyEvent.ACTION_DOWN, keyCode).isPrintingKey
+        }
     }
 }
