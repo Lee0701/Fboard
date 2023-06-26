@@ -25,6 +25,9 @@ jobs:
           distribution: 'adopt' # See 'Supported distributions' for available options
           java-version: '17'
 
+      - name: Set Timezone
+        run: ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -79,16 +82,6 @@ jobs:
       - name: Get package name from build.gradle
         run: echo "PACKAGE_NAME=$(${{ github.workspace }}/gradlew -q :ime-${{ matrix.locale }}:printPackageName)" >> $GITHUB_ENV
 
-      - name: Deploy to Play Store
-        id: deploy
-        uses: r0adkll/upload-google-play@v1.0.19
-        with:
-          serviceAccountJson: ${{ env.TMP_SERVICE_ACCOUNT_JSON }}
-          packageName: ${{ env.PACKAGE_NAME }}
-          releaseFiles: ime-${{ matrix.locale }}/build/outputs/bundle/release/ime-${{ matrix.locale }}-release.aab
-          track: internal
-          status: draft
-
       - name: Push new version information
         uses: Fboard/publish@master
         env:
@@ -103,4 +96,24 @@ jobs:
           tag: "${{ env.VERSION_NAME }}"
           tag_exists_error: false
           message: ""
+
+      - name: "Generate release changelog"
+        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        id: "generate_changelog"
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          onlyLastTag: true
+          stripHeaders: true
+          stripGeneratorNotice: true
+
+      - name: Deploy to Play Store
+        id: deploy
+        uses: Fboard/upload-google-play@v1.0.19
+        with:
+          serviceAccountJson: ${{ env.TMP_SERVICE_ACCOUNT_JSON }}
+          packageName: ${{ env.PACKAGE_NAME }}
+          releaseFiles: ime-${{ matrix.locale }}/build/outputs/bundle/release/ime-${{ matrix.locale }}-release.aab
+          whatsNewText: ${{ steps.generate_changelog.changelog }}
+          track: internal
+          status: draft
 
