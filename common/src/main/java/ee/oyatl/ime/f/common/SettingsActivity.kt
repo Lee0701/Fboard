@@ -9,6 +9,8 @@ import android.os.Bundle
 import androidx.annotation.XmlRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentFactory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.android.material.elevation.SurfaceColors
@@ -24,9 +26,12 @@ abstract class SettingsActivity: AppCompatActivity(), OnSharedPreferenceChangeLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        supportFragmentManager.fragmentFactory = FboardFragmentFactory(prefResId)
+        val fragment = supportFragmentManager.fragmentFactory
+            .instantiate(classLoader, SettingsFragment::class.java.name)
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.settings, SettingsFragment(prefResId))
+            .replace(R.id.settings, fragment)
             .commit()
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -62,12 +67,25 @@ abstract class SettingsActivity: AppCompatActivity(), OnSharedPreferenceChangeLi
         }
     }
 
+    class FboardFragmentFactory(
+        @XmlRes val prefResId: Int,
+    ): FragmentFactory() {
+        override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
+            return when(className) {
+                SettingsFragment::class.java.name -> SettingsFragment(prefResId)
+                else -> super.instantiate(classLoader, className)
+            }
+        }
+    }
+
     override fun onSharedPreferenceChanged(pref: SharedPreferences?, key: String?) {
         if(invalidated) {
+            val fragment = supportFragmentManager.fragmentFactory
+                .instantiate(classLoader, SettingsFragment::class.java.name)
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.settings, SettingsFragment(prefResId))
-                .commitAllowingStateLoss()
+                .replace(R.id.settings, fragment)
+                .commit()
         }
         invalidated = false
     }
