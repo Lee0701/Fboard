@@ -10,16 +10,15 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import ee.oyatl.ime.f.common.table.MoreKeysTable
 import ee.oyatl.ime.f.common.switcher.IMESwitcher
 import ee.oyatl.ime.f.common.switcher.InAppIMESwitcher
 import ee.oyatl.ime.f.common.switcher.LegacyIMESwitcher
 import ee.oyatl.ime.f.common.switcher.NewIMESwitcher
+import ee.oyatl.ime.f.common.table.MoreKeysTable
 import ee.oyatl.ime.f.common.view.DefaultInputViewManager
 import ee.oyatl.ime.f.common.view.InputViewManager
 import ee.oyatl.ime.f.common.view.keyboard.FlickDirection
 import ee.oyatl.ime.f.common.view.keyboard.KeyboardListener
-import ee.oyatl.ime.f.common.view.model.KeyboardLayout
 import ee.oyatl.ime.f.core.input.CustomKeycode
 import ee.oyatl.ime.f.core.input.ModifierState
 import ee.oyatl.ime.f.core.table.CharOverrideTable
@@ -135,10 +134,11 @@ abstract class DefaultFboardIME: InputMethodService(), FboardIME, KeyboardListen
     protected open fun updateMoreKeys() {
         val inputViewManager = inputViewManager
         if(inputViewManager is DefaultInputViewManager) {
-            val convertedTable = moreKeysTable.map
-                .map { (key, value) -> (convertTable.getReversed(key, modifierState) ?: key) to value }
-                .toMap()
-            inputViewManager.keyboardView?.updateMoreKeyKeyboards(convertedTable)
+            val moreKeysTable = this.moreKeysTable.map.map { (char, value) ->
+                val keyCode: Int? = convertTable.getReversed(char, modifierState)
+                if(keyCode != null) keyCode to value else null
+            }.filterNotNull().toMap()
+            inputViewManager.keyboardView?.updateMoreKeyKeyboards(moreKeysTable)
         }
     }
 
@@ -199,8 +199,46 @@ abstract class DefaultFboardIME: InputMethodService(), FboardIME, KeyboardListen
     override fun onKeyFlick(direction: FlickDirection, code: Int, output: String?) {
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        when(keyCode) {
+            KeyEvent.KEYCODE_SHIFT_LEFT, KeyEvent.KEYCODE_SHIFT_RIGHT -> {
+                modifierState = modifierState.copy(shiftState = ModifierState.Item(
+                    pressed = true,
+                    pressing = true,
+                ))
+                onUpdate()
+            }
+            KeyEvent.KEYCODE_CAPS_LOCK -> {
+                val newState = !modifierState.shiftState.locked
+                modifierState = modifierState.copy(shiftState = ModifierState.Item(
+                    pressed = newState,
+                    locked = newState,
+                ))
+                onUpdate()
+            }
+            else -> {
+                this.onKeyClick(keyCode, event?.unicodeChar?.toChar()?.toString())
+            }
+        }
+        return true
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        when(keyCode) {
+            KeyEvent.KEYCODE_SHIFT_LEFT, KeyEvent.KEYCODE_SHIFT_RIGHT -> {
+                modifierState = modifierState.copy(shiftState = ModifierState.Item(
+                    pressed = false,
+                    pressing = false,
+                ))
+                onUpdate()
+            }
+        }
+        return true
+    }
+
     protected open fun autoUnshift() {
         if(modifierState.shiftState.pressing && inputRecorded) return
+        if(inAppIMESwitcher.currentStateName == "symbols") return
         val lastState = modifierState
         val lastShiftState = lastState.shiftState
         if(!lastShiftState.locked && !lastShiftState.pressing) {
