@@ -5,12 +5,14 @@
         <item>@string/pref_keyboard_2set_ks</item>
         <item>@string/pref_keyboard_3set_390</item>
         <item>@string/pref_keyboard_3set_391</item>
+        <item>@string/pref_keyboard_3set_shin_original</item>
     </string-array>
 
     <string-array name="preset_mobile_ko_values">
         <item>2set_ks</item>
         <item>3set_390</item>
         <item>3set_391</item>
+        <item>3set_shin_original</item>
     </string-array>
 
 </resources>

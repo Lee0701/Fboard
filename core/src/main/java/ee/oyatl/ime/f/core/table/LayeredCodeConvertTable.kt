@@ -6,11 +6,13 @@ class LayeredCodeConvertTable(
     val layers: Map<String, CodeConvertTable>,
 ): CodeConvertTable {
 
-    fun get(layerId: String): CodeConvertTable? {
+    constructor(vararg items: Pair<String, CodeConvertTable>): this(items.toMap())
+
+    operator fun get(layerId: String): CodeConvertTable? {
         return layers[layerId]
     }
 
-    fun get(layerId: String, keyCode: Int, state: ModifierState): Int? {
+    operator fun get(layerId: String, keyCode: Int, state: ModifierState): Int? {
         return get(layerId)?.get(keyCode, state) ?: get(BASE_LAYER_NAME)?.get(keyCode, state)
     }
 

@@ -62,4 +62,11 @@ object SoftKeyboardLayouts {
         ROW_390_391_BOTTOM,
     )
 
+    val LAYOUT_QWERTY_SHIN_MOBILE = KeyboardLayout(
+        SoftKeyboardLayouts.ROW_QWERTY_1,
+        SoftKeyboardLayouts.ROW_QWERTY_2_WO_SPACER + Row(SoftKeyboardLayouts.SEMICOLON),
+        ROW_QWERTY_391_3,
+        ROW_390_391_BOTTOM,
+    )
+
 }

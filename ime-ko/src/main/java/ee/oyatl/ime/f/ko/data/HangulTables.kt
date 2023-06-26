@@ -1,8 +1,9 @@
 package ee.oyatl.ime.f.ko.data
 
 import android.view.KeyEvent
-import ee.oyatl.ime.f.core.table.CodeConvertTable
 import ee.oyatl.ime.f.core.input.CustomKeycode
+import ee.oyatl.ime.f.core.table.CodeConvertTable
+import ee.oyatl.ime.f.core.table.LayeredCodeConvertTable
 import ee.oyatl.ime.f.core.table.SimpleCodeConvertTable
 import ee.oyatl.ime.f.core.table.SimpleCodeConvertTable.Entry
 import ee.oyatl.ime.f.ko.hangul.JamoCombinationTable
@@ -165,6 +166,119 @@ object HangulTables {
         listOf(0x100116e, 0x1165, 0x116f),	// ㅝ
         listOf(0x100116e, 0x1166, 0x1170),	// ㅞ
         listOf(0x100116e, 0x1175, 0x1171),	// ㅟ
+    )
+
+    val LAYOUT_3SET_SHIN_ORIGINAL_L0 = SimpleCodeConvertTable(
+        KeyEvent.KEYCODE_Q to Entry(0x11ba, 0x1174),
+        KeyEvent.KEYCODE_W to Entry(0x11af, 0x1163),
+        KeyEvent.KEYCODE_E to Entry(0x11b8, 0x1167),
+        KeyEvent.KEYCODE_R to Entry(0x11ae, 0x1162),
+        KeyEvent.KEYCODE_T to Entry(0x11c0, 0x1165),
+        KeyEvent.KEYCODE_Y to Entry(0x1105, 0x1105),
+        KeyEvent.KEYCODE_U to Entry(0x1103, 0x1103),
+        KeyEvent.KEYCODE_I to Entry(0x1106, 0x01116e),
+        KeyEvent.KEYCODE_O to Entry(0x110e, 0x01116e),
+        KeyEvent.KEYCODE_P to Entry(0x1111, 0x011169),
+        KeyEvent.KEYCODE_A to Entry(0x11bc, 0x1164),
+        KeyEvent.KEYCODE_S to Entry(0x11ab, 0x1168),
+        KeyEvent.KEYCODE_D to Entry(0x11c2, 0x1175),
+        KeyEvent.KEYCODE_F to Entry(0x11bd, 0x1161),
+        KeyEvent.KEYCODE_G to Entry(0x11c1, 0x1173),
+        KeyEvent.KEYCODE_H to Entry(0x1102, 0x1102),
+        KeyEvent.KEYCODE_J to Entry(0x110b, 0x3b),
+        KeyEvent.KEYCODE_K to Entry(0x1100, 0x27),
+        KeyEvent.KEYCODE_L to Entry(0x110c, 0x110c),
+        KeyEvent.KEYCODE_SEMICOLON to Entry(0x1107, 0x3a),
+        KeyEvent.KEYCODE_APOSTROPHE to Entry(0x1110, 0x22),
+        KeyEvent.KEYCODE_Z to Entry(0x11b7, 0x1172),
+        KeyEvent.KEYCODE_X to Entry(0x11a8, 0x116d),
+        KeyEvent.KEYCODE_C to Entry(0x11be, 0x1166),
+        KeyEvent.KEYCODE_V to Entry(0x11bf, 0x1169),
+        KeyEvent.KEYCODE_B to Entry(0x11bb, 0x116e),
+        KeyEvent.KEYCODE_N to Entry(0x1109, 0x1109),
+        KeyEvent.KEYCODE_M to Entry(0x1112, 0x2f),
+        KeyEvent.KEYCODE_SLASH  to Entry(0x110f, 0x3f),
+        CustomKeycode.KEYCODE_PERIOD_COMMA.code to Entry(0x2e, 0x2c)
+    )
+
+    val LAYOUT_3SET_SHIN_ORIGINAL_L1 = SimpleCodeConvertTable(
+        KeyEvent.KEYCODE_Q to Entry(0x1174, 0x11ba),
+        KeyEvent.KEYCODE_W to Entry(0x1163, 0x11af),
+        KeyEvent.KEYCODE_E to Entry(0x1167, 0x11b8),
+        KeyEvent.KEYCODE_R to Entry(0x1162, 0x11ae),
+        KeyEvent.KEYCODE_T to Entry(0x1165, 0x11c0),
+        KeyEvent.KEYCODE_Y to Entry(0x1105, 0x1105),
+        KeyEvent.KEYCODE_U to Entry(0x1103, 0x1103),
+        KeyEvent.KEYCODE_I to Entry(0x01116e, 0x1106),
+        KeyEvent.KEYCODE_O to Entry(0x01116e, 0x110e),
+        KeyEvent.KEYCODE_P to Entry(0x011169, 0x1111),
+        KeyEvent.KEYCODE_A to Entry(0x1164, 0x11bc),
+        KeyEvent.KEYCODE_S to Entry(0x1168, 0x11ab),
+        KeyEvent.KEYCODE_D to Entry(0x1175, 0x11c2),
+        KeyEvent.KEYCODE_F to Entry(0x1161, 0x11bd),
+        KeyEvent.KEYCODE_G to Entry(0x1173, 0x11c1),
+        KeyEvent.KEYCODE_H to Entry(0x1102, 0x1102),
+        KeyEvent.KEYCODE_J to Entry(0x110b, 0x3b),
+        KeyEvent.KEYCODE_K to Entry(0x1100, 0x27),
+        KeyEvent.KEYCODE_L to Entry(0x110c, 0x110c),
+        KeyEvent.KEYCODE_SEMICOLON  to Entry(0x1107, 0x3a),
+        KeyEvent.KEYCODE_APOSTROPHE to Entry(0x1110, 0x22),
+        KeyEvent.KEYCODE_Z to Entry(0x1172, 0x11b7),
+        KeyEvent.KEYCODE_X to Entry(0x116d, 0x11a8),
+        KeyEvent.KEYCODE_C to Entry(0x1166, 0x11be),
+        KeyEvent.KEYCODE_V to Entry(0x1169, 0x11bf),
+        KeyEvent.KEYCODE_B to Entry(0x116e, 0x11bb),
+        KeyEvent.KEYCODE_N to Entry(0x1109, 0x1109),
+        KeyEvent.KEYCODE_M to Entry(0x1112, 0x2f),
+        KeyEvent.KEYCODE_SLASH to Entry(0x011169, 0x3f),
+        CustomKeycode.KEYCODE_PERIOD_COMMA.code to Entry(0x2e, 0x2c)
+    )
+
+    val LAYOUT_3SET_SHIN_ORIGINAL = LayeredCodeConvertTable(
+        "base" to LAYOUT_3SET_SHIN_ORIGINAL_L0,
+        "\$cho" to LAYOUT_3SET_SHIN_ORIGINAL_L1,
+        "\$jung" to LAYOUT_3SET_SHIN_ORIGINAL_L0,
+        "\$jong" to LAYOUT_3SET_SHIN_ORIGINAL_L0,
+    )
+
+    val COMB_3SET_SHIN = JamoCombinationTable(
+        listOf(0x1100, 0x1100, 0x1101),
+        listOf(0x1103, 0x1103, 0x1104),
+        listOf(0x1107, 0x1107, 0x1108),
+        listOf(0x1109, 0x1109, 0x110a),
+        listOf(0x110c, 0x110c, 0x110d),
+        listOf(0x1169, 0x1161, 0x116a),
+        listOf(0x1169, 0x1162, 0x116b),
+        listOf(0x1169, 0x1175, 0x116c),
+        listOf(0x116e, 0x1165, 0x116f),
+        listOf(0x116e, 0x1166, 0x1170),
+        listOf(0x116e, 0x1175, 0x1171),
+        listOf(0x1173, 0x1175, 0x1174),
+        listOf(0x119e, 0x1175, 0x11a1),
+        listOf(0x119e, 0x119e, 0x11a2),
+        listOf(0x011169, 0x1161, 0x116a),
+        listOf(0x011169, 0x1162, 0x116b),
+        listOf(0x011169, 0x1175, 0x116c),
+        listOf(0x01116e, 0x1165, 0x116f),
+        listOf(0x01116e, 0x1166, 0x1170),
+        listOf(0x01116e, 0x1175, 0x1171),
+        listOf(0x011173, 0x1175, 0x1174),
+        listOf(0x01119e, 0x1175, 0x11a1),
+        listOf(0x01119e, 0x119e, 0x11a2),
+        listOf(0x01119e, 0x01119e, 0x11a2),
+        listOf(0x11a8, 0x11a8, 0x11a9),
+        listOf(0x11a8, 0x11ba, 0x11aa),
+        listOf(0x11ab, 0x11bd, 0x11ac),
+        listOf(0x11ab, 0x11c2, 0x11ad),
+        listOf(0x11af, 0x11a8, 0x11b0),
+        listOf(0x11af, 0x11b7, 0x11b1),
+        listOf(0x11af, 0x11b8, 0x11b2),
+        listOf(0x11af, 0x11ba, 0x11b3),
+        listOf(0x11af, 0x11c0, 0x11b4),
+        listOf(0x11af, 0x11c1, 0x11b5),
+        listOf(0x11af, 0x11c2, 0x11b6),
+        listOf(0x11b8, 0x11ba, 0x11b9),
+        listOf(0x11ba, 0x11ba, 0x11bb)
     )
 
     val LAYOUT_2SET_KS: CodeConvertTable = SimpleCodeConvertTable(mapOf(

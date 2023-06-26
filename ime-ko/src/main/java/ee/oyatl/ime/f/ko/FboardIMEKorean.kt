@@ -72,7 +72,12 @@ class FboardIMEKorean: DefaultFboardIME(), TableIME {
 
     override fun updateLabelsAndIcons() {
         super.updateLabelsAndIcons()
-        val labels = convertTable.getAllForState(modifierState).map { (k, v) ->
+        val convertTable = this.convertTable
+        val table = if(convertTable is LayeredCodeConvertTable)
+            convertTable[layerIdByHangulState]?.getAllForState(modifierState).orEmpty()
+        else
+            convertTable.getAllForState(modifierState)
+        val labels = table.map { (k, v) ->
             k to v.toChar().toString()
         }.toMap()
         inputViewManager.updateLabelsAndIcons(labels, mapOf())
