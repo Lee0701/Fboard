@@ -84,10 +84,11 @@ class FboardIMEKorean: DefaultFboardIME(), TableIME {
             else
                 convertTable[keyCode, modifierState]
         if(converted == null) {
-            val char = keyCharacterMap.get(keyCode, modifierState.asMetaState())
             onReset()
+            val char = keyCharacterMap.get(keyCode, modifierState.asMetaState())
             if(char > 0) inputConnection.commitText(char.toChar().toString(), 1)
         } else if(hangulCombiner == null) {
+            onReset()
             val text = converted.toChar().toString()
             inputConnection.commitText(text, 1)
         } else {
