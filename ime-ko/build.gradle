@@ -11,8 +11,8 @@ android {
         applicationId "ee.oyatl.ime.f.ko"
         minSdk 16
         targetSdk 34
-        versionCode 7
-        versionName "20230626-7-7713328"
+        versionCode 8
+        versionName "20230626-8-6ed240a"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders['package'] = applicationId
